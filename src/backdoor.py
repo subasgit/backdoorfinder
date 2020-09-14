@@ -4,8 +4,8 @@ import osquery
 
 def processes_exposed_network_attack():
     """Very often Malware listens on port to provide command and control (C&C) \
-    or direct shell access for an attacker.Running this query periodically and diffing\
-    with the last ‘known good’ results will help the security team to identify malicious \
+    or direct shell access for an attacker.Running this query periodically and diffing \
+    with the last known good results will help the security team to identify malicious \
     running in any endpoints"""
     instance = osquery.SpawnInstance()
     instance.open()  # This may raise an exception
