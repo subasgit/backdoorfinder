@@ -20,7 +20,7 @@ def processes_exposed_network_attack():
     for entry in response:
         process = {'name': entry['name'], 'port': entry['port']}
         process_list.append(process)
-        print(process_list)
+        #print(process_list)
     return process_list
 
 

@@ -14,7 +14,7 @@ Based on your operating system, install osquery from  https://osquery.io/downloa
 
 and to install osquery python module run the following:
 
-pip install osquery
+```pip3 install osquery```
 
 Alternatively, to install from this repo, run the following:
 python setup.py build
