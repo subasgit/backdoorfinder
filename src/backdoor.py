@@ -1,5 +1,6 @@
 import os
 import osquery
+import requests
 
 
 def processes_exposed_network_attack():
@@ -20,7 +21,55 @@ def processes_exposed_network_attack():
     for entry in response:
         process = {'name': entry['name'], 'port': entry['port']}
         process_list.append(process)
-        #print(process_list)
+        # print(process_list)
+    return process_list
+
+
+def suspicious_process_to_unknown_ports(api_key):
+    """ Lists processes with IP traffic to remote ports not in (80, 443) and this can potentially \
+    identify suspicious outbound network activity. We can cross verify this external IP address \
+    with API VOID if its connected to known malicious IP address and list only those process.\
+    If no API key is available all processes that meets the above criteria will be listed"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    # Query local host for processes established to port other than 80 and 443
+    result_ip = instance.client.query(
+        "select s.pid, p.name, local_address, remote_address, family, protocol, local_port, remote_port \
+        from process_open_sockets s join processes p on s.pid = p.pid where remote_port not in (80, 443) \
+        and remote_address != '127.0.0.1' and s.state = 'ESTABLISHED'")
+    print(result_ip)
+    process_list = []
+    response = result_ip.response
+    for entry in response:
+        process = {}
+        process['name'] = entry['name']
+        process['local_address'] = entry['local_address']
+        process['local_port'] = entry['local_port']
+        process['remote_address'] = entry['remote_address']
+        process['remote_port'] = entry['remote_port']
+        print('Process {} has established connection from {} port {} to {} port {}'.format(entry['name'],
+                                                                                           entry['local_address'],
+                                                                                           entry['local_port'],
+                                                                                           entry['remote_address'],
+                                                                                           entry['remote_port']))
+
+        # Check whether the remote_address is a known malicious IP address if API Key is provided
+        if api_key != 'none' or api_key != 'None':
+            payload = {'key': api_key, 'ip': entry['remote_address']}
+            r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
+            if "error" not in r.json():
+                print(r.json())
+                output = r.json()
+                detection_rate = output['data']['report']['blacklists']['detections']
+                country = output['data']['report']['information']['country_name']
+                if detection_rate > 5:
+                    print('{} is a malicious address belongs to {} with a detection rate of {}'.format(
+                        entry['remote_address'], country, detection_rate))
+                    process_list.append(process)
+                    print(process_list)
+                else:
+                    print('{} is not a malicious address belongs to {}'.format(entry['remote_address'], country))
+        process_list.append(process)
     return process_list
 
 
