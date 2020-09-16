@@ -3,6 +3,7 @@ import osquery
 import requests
 import time
 from datetime import date
+import ipaddress
 
 
 def processes_exposed_network_attack():
@@ -75,22 +76,24 @@ def suspicious_process_to_unknown_ports(api_key):
 
         # Check whether the remote_address is a known malicious IP address if API Key is provided
         if api_key != 'none' and api_key != 'None':
-            payload = {'key': api_key, 'ip': entry['remote_address']}
-            r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
-            if "error" not in r.json():
-                print(r.json())
-                output = r.json()
-                detection_rate = output['data']['report']['blacklists']['detections']
-                country = output['data']['report']['information']['country_name']
-                if detection_rate > 5:
-                    print('{} is a malicious address belongs to {} with a detection rate of {}'.format(
-                        entry['remote_address'], country, detection_rate))
-                    process_list.append(process)
-                    # print(process_list)
-                else:
-                    print('{} is not a malicious address belongs to {}'.format(entry['remote_address'], country))
-        else:
-            process_list.append(process)
+            if not ipaddress.ip_address(entry['remote_address']).is_private:
+                payload = {'key': api_key, 'ip': entry['remote_address']}
+                r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
+                print(r.json)
+                if "error" not in r.json():
+                    print(r.json())
+                    output = r.json()
+                    process['detections'] = output['data']['report']['blacklists']['detections']
+                    process['detection_rate'] = output['data']['report']['blacklists']['detection_rate']
+                    process['country'] = output['data']['report']['information']['country_name']
+                    process['isp'] = output['data']['report']['information']['isp']
+                    process['is_proxy'] = output['data']['report']['anonymity']['is_proxy']
+                    process['is_webproxy'] = output['data']['report']['anonymity']['is_webproxy']
+                    process['is_vpn'] = output['data']['report']['anonymity']['is_vpn']
+                    process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
+                    process['is_tor'] = output['data']['report']['anonymity']['is_tor']
+
+        process_list.append(process)
     return process_list
 
 
