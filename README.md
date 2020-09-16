@@ -45,9 +45,13 @@ unknown ports. Those processes could potentially be communicating with command a
 hosts/endpoint vulnerable for attacks.
 
 We can cross verify the credibility score of the external IP address that the processes establishes 
-connection with API VOID lookup. If the connected IP is malicious we list only those process in CSV.
-If you don't have the API key then please enter none and we list all potentially suspicious processes running 
-in your hosts/endpoint. The processes written in CSV can be tracked based on the time the script is executed
+connection with API VOID lookup.Along with the detection rate, all the details of external IP are also returned and 
+written in CSV file.This involves key information like detection rate, country, ISP hosting it and anonymity details 
+like whether it a Web proxy, VPN address or its a tor network.
+
+If you don't have the API key then please enter none and we list all potentially suspicious 
+processes running in your hosts/endpoint. The processes written in CSV can be tracked based on the date and time the 
+script is executed.
 
 
 How to get API VOID API Key?
