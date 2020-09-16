@@ -1,6 +1,8 @@
 import os
 import osquery
 import requests
+import time
+from datetime import date
 
 
 def processes_exposed_network_attack():
@@ -17,9 +19,19 @@ def processes_exposed_network_attack():
                                    process JOIN listening_ports AS listening ON process.pid = listening.pid WHERE \
                                    listening.address = '0.0.0.0'")
     response = result.response
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
     # List all that process
     for entry in response:
-        process = {'name': entry['name'], 'port': entry['port']}
+        process = {}
+        process['date'] = d1
+        process['current_time'] = current_time
+        process['name'] = entry['name']
+        process['port'] = entry['port']
         process_list.append(process)
         # print(process_list)
     return process_list
@@ -40,8 +52,16 @@ def suspicious_process_to_unknown_ports(api_key):
     print(result_ip)
     process_list = []
     response = result_ip.response
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
     for entry in response:
         process = {}
+        process['date'] = d1
+        process['current_time'] = current_time
         process['name'] = entry['name']
         process['local_address'] = entry['local_address']
         process['local_port'] = entry['local_port']
@@ -54,7 +74,7 @@ def suspicious_process_to_unknown_ports(api_key):
                                                                                            entry['remote_port']))
 
         # Check whether the remote_address is a known malicious IP address if API Key is provided
-        if api_key != 'none' or api_key != 'None':
+        if api_key != 'none' and api_key != 'None':
             payload = {'key': api_key, 'ip': entry['remote_address']}
             r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
             if "error" not in r.json():
@@ -66,10 +86,11 @@ def suspicious_process_to_unknown_ports(api_key):
                     print('{} is a malicious address belongs to {} with a detection rate of {}'.format(
                         entry['remote_address'], country, detection_rate))
                     process_list.append(process)
-                    print(process_list)
+                    # print(process_list)
                 else:
                     print('{} is not a malicious address belongs to {}'.format(entry['remote_address'], country))
-        process_list.append(process)
+        else:
+            process_list.append(process)
     return process_list
 
 

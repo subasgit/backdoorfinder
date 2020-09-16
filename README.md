@@ -33,6 +33,8 @@ port number range to connect. Network traffic from the internet to local hosts l
 by network attackers or incorrectly programmed applications. When your hosts responds to this message, it will help 
 attackers to learn the behaviour and potential vulnerabilities of your hosts/endpoint.
 
+These processes and ports are written in CSV file along with the time the script is executed
+
 ### Finding processes that establishes suspicious outbound network activity
 
 function  :  suspicious_process_to_unknown_ports
@@ -45,7 +47,8 @@ hosts/endpoint vulnerable for attacks.
 We can cross verify the credibility score of the external IP address that the processes establishes 
 connection with API VOID lookup. If the connected IP is malicious we list only those process in CSV.
 If you don't have the API key then please enter none and we list all potentially suspicious processes running 
-in your hosts/endpoint.
+in your hosts/endpoint. The processes written in CSV can be tracked based on the time the script is executed
+
 
 How to get API VOID API Key?
 https://www.apivoid.com/api/ip-reputation/ 
