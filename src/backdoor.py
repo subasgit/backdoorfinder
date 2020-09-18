@@ -83,6 +83,7 @@ def suspicious_process_to_unknown_ports(api_key):
                 if "error" not in r.json():
                     print(r.json())
                     output = r.json()
+                    process['is_private'] = 'false'
                     process['detections'] = output['data']['report']['blacklists']['detections']
                     process['detection_rate'] = output['data']['report']['blacklists']['detection_rate']
                     process['country'] = output['data']['report']['information']['country_name']
@@ -103,8 +104,15 @@ def convert_to_csv(file_name, parameters):
         return 0
     if not os.path.exists(file_name):
         with open(file_name, 'a+', newline='') as write_obj:
+            # Find the longest header file
+            length = 0
+            for param in parameters:
+                new_length = len(param)
+                if new_length > length:
+                    length = new_length
+                    final_list = param
             # Adding header for csv file
-            for key in parameters[0]:
+            for key in final_list:
                 write_obj.write(key + ",")
             write_obj.write("\n")
 
@@ -115,3 +123,5 @@ def convert_to_csv(file_name, parameters):
             for key, value in process.items():
                 write_obj.write(value + ",")
             write_obj.write("\n")
+
+
