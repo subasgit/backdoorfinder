@@ -104,24 +104,34 @@ def convert_to_csv(file_name, parameters):
         return 0
     if not os.path.exists(file_name):
         with open(file_name, 'a+', newline='') as write_obj:
-            # Find the longest header file
+            # Find the longest header file and select the headers for csv
             length = 0
             for param in parameters:
                 new_length = len(param)
                 if new_length > length:
                     length = new_length
                     final_list = param
-            # Adding header for csv file
+            # Adding header in the csv file
+            # Adding the number of iteration
+            write_obj.write('iteration' + ",")
             for key in final_list:
                 write_obj.write(key + ",")
             write_obj.write("\n")
 
+    # Find the last line in CSV file and increase the iteration number for further run
+    with open(file_name, "r") as f1:
+        last_line = f1.readlines()[-1]
+        first_item = last_line.split(',')[0]
+        if 'iteration' in first_item:
+            iteration_value = 1
+        else:
+            iteration_value = int(first_item) + 1
+
     with open(file_name, 'a+', newline='') as write_obj:
         # Adding entries
         for process in parameters:
-            print(process)
+            # Append Iteration value
+            write_obj.write(str(iteration_value) + ",")
             for key, value in process.items():
-                write_obj.write(value + ",")
+                write_obj.write(str(value) + ",")
             write_obj.write("\n")
-
-
