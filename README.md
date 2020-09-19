@@ -60,3 +60,16 @@ https://www.apivoid.com/api/ip-reputation/
 Click Register Now and obtain APIKey. Initially you get 25 free API credits. Please review the pricing details.
 
 Scope: I'll add support for VirusTotal lookup as well at later point.
+
+
+### Writing the process output to csv file 
+
+function: convert_to_csv
+
+This function will create new csv file for every procedure that calls this. We need to send the file name and parameters
+to write to the file as part of the arguments.
+
+If this is the first time this script is run, it will create new file under the directory where you execute this
+script and populate the parameters that is passed on to it. If the file exists, then new parameters are appended on
+to the csv file. Each time this function is called by a procedure, it appends with iteration number. This will help in
+filtering the latest runs
