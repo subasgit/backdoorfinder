@@ -33,6 +33,8 @@ def processes_exposed_network_attack():
         process['current_time'] = current_time
         process['name'] = entry['name']
         process['port'] = entry['port']
+        # Get the process PID and memory consumed
+        process['pid'], process['memory'] = check_processes_memory(entry['name'])
         process_list.append(process)
         # print(process_list)
     return process_list
@@ -98,8 +100,19 @@ def suspicious_process_to_unknown_ports(api_key):
     return process_list
 
 
+def check_processes_memory(process):
+    """Find the pid and memory consumed by the process requested"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    result = instance.client.query("select pid, resident_size from processes \
+            where name='%s'" % process)
+    response = result.response
+    for entry in response:
+        return entry['pid'], entry['resident_size']
+
+
 def convert_to_csv(file_name, parameters):
-    # This function writes the output in CSV file
+    """Writes the parameters parsed to CSV file """
     if not bool(parameters):
         return 0
     if not os.path.exists(file_name):
