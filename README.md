@@ -74,9 +74,9 @@ script and populate the parameters that is passed on to it. If the file exists, 
 to the csv file. Each time this function is called by a procedure, it appends with iteration number. This will help in
 filtering the latest runs
 
-### Checks process memory and pid
+### Checks memory and bytes written and read by the process
 
 function: check_processes_memory
 
-This function can be used to check process memory and pid. Currently using to check the processes exposed to network 
-attacks. This would add value to see if system resources are consumed heavily by any process.
+This function can be used to check process memory, bytes written and read. This would add value to see if system 
+resources are consumed heavily by any process.
