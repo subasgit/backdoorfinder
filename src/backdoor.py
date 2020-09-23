@@ -33,8 +33,10 @@ def processes_exposed_network_attack():
         process['current_time'] = current_time
         process['name'] = entry['name']
         process['port'] = entry['port']
-        # Get the process PID and memory consumed
-        process['pid'], process['memory'] = check_processes_memory(entry['name'])
+        # Get the bytes read , written and memory used
+        process['pid'] = entry['pid']
+        process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
+            check_processes_memory(entry['pid'])
         process_list.append(process)
         # print(process_list)
     return process_list
@@ -95,20 +97,21 @@ def suspicious_process_to_unknown_ports(api_key):
                     process['is_vpn'] = output['data']['report']['anonymity']['is_vpn']
                     process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
                     process['is_tor'] = output['data']['report']['anonymity']['is_tor']
-
+        process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
+            check_processes_memory(entry['pid'])
         process_list.append(process)
     return process_list
 
 
-def check_processes_memory(process):
+def check_processes_memory(pid):
     """Find the pid and memory consumed by the process requested"""
     instance = osquery.SpawnInstance()
     instance.open()
-    result = instance.client.query("select pid, resident_size from processes \
-            where name='%s'" % process)
+    result = instance.client.query("select resident_size,disk_bytes_read,disk_bytes_written from processes \
+            where pid='%s'" % pid)
     response = result.response
     for entry in response:
-        return entry['pid'], entry['resident_size']
+        return [entry['resident_size'], entry['disk_bytes_read'], entry['disk_bytes_written']]
 
 
 def convert_to_csv(file_name, parameters):
