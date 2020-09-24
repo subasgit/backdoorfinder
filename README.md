@@ -80,3 +80,24 @@ function: check_processes_memory
 
 This function can be used to check process memory, bytes written and read. This would add value to see if system 
 resources are consumed heavily by any process.
+
+### Add configuration parameters like apikey and file paths
+
+File : Configure.py
+
+This python script needs to be run first to collect neccessary information to run your generate_backdoor_report.py. 
+This is one time run to set your variables 
+
+Function : get_api_key
+
+This function will prompt the user to enter the api key if he has any. Input will be stored in configure.txt
+
+Function : get_file_path
+
+This function gives the flexibility to store the file at the location you intent to. Input will be stored in 
+configure.txt If user dont have any preference of file path, file will be stored in the directory where the script 
+is executed. 
+
+
+
+
