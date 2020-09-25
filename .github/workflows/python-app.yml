@@ -27,7 +27,7 @@ jobs:
         sudo apt-get update -Y
         sudo apt-get install osquery -Y
         python -m pip install --upgrade pip
-        #pip3 install osquery
+        pip3 install osquery
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
