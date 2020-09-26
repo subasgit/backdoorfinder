@@ -1,5 +1,5 @@
 import backdoor
-
+import argparse
 
 def write_to_csv_processes_exposed_network_attack():
     """ Find processes that is listening on 0.0.0.0 and exposing ur network for attack and write it in csv file """
@@ -59,8 +59,20 @@ def read_configure_file(parameter, value=''):
 
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    FUNCTION_MAP = {'ena': write_to_csv_processes_exposed_network_attack,
+                    'sup': write_to_csv_suspicious_process_to_unknown_ports}
+
+    parser.add_argument('command', choices=FUNCTION_MAP.keys())
+
+    args = parser.parse_args()
+
+    func = FUNCTION_MAP[args.command]
+
+    func()
     # Find processes that is exposed for potential network attacks
-    write_to_csv_processes_exposed_network_attack()
+    #write_to_csv_processes_exposed_network_attack()
 
     # Find suspicious process connecting to unknown ports
-    write_to_csv_suspicious_process_to_unknown_ports()
+    #write_to_csv_suspicious_process_to_unknown_ports()
