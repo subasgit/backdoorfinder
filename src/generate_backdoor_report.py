@@ -63,21 +63,20 @@ def read_configure_file(parameter, value=''):
 def get_arguments_options(args=sys.argv[1:]):
     """Parse arguments from command line and run specific functions"""
     parser = argparse.ArgumentParser(description="Select from functions below")
-    parser.add_argument("-ena", help="Find processes exposed to network attack.")
-    parser.add_argument("-sup", help="Find processes connected with suspicious remote ports")
-    parser.add_argument("-all", help="Run all backdoor functions")
+    parser.add_argument("-i", "--input", help="ena -> Find processes exposed to network attack;\
+                                                 sup -> Find suspicious process to unknown_ports")
     option = parser.parse_args(args)
     return option
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        write_to_csv_processes_exposed_network_attack()
+        write_to_csv_suspicious_process_to_unknown_ports()
     options = get_arguments_options(sys.argv[1:])
-    if options.ena:
+    if options.input == 'ena':
         # Find processes that is exposed for potential network attacks
         write_to_csv_processes_exposed_network_attack()
-    if options.sup:
+    if options.input == 'sup':
         # Find suspicious process connecting to unknown ports
-        write_to_csv_suspicious_process_to_unknown_ports()
-    if options.all:
-        write_to_csv_processes_exposed_network_attack()
         write_to_csv_suspicious_process_to_unknown_ports()
