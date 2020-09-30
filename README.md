@@ -20,6 +20,16 @@ Alternatively, to install from this repo, run the following:
 python setup.py build
 python setup.py install
 
+### How to run the script
+
+If you want to run all functions of backdoor, you can just run 
+    python3 generate_backdoor_report.py
+
+To run specific functions, you can do python3 generate_backdoor_report.py -h to check options to run specific functions
+    ena : Find processes exposed to network attack
+    sup : Find suspicious process to unknown_ports
+    
+    
 ### Finding processes that exposes TCP/UDP ports for network attacks
 
 function  : processes_exposed_network_attack
