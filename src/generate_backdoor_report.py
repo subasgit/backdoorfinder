@@ -36,6 +36,15 @@ def write_to_csv_suspicious_process_to_unknown_ports():
     print("Suspicious process connecting to unknown ports are written in suspicious_process_to_unknown_ports.csv ")
 
 
+def write_to_csv_process_running_binary_deleted():
+    """ Find processes running on the endpoint whose binary has been deleted from disk"""
+    # Processes that are running whose binary has been deleted from the disk
+    process_list = backdoor.processes_running_binary_deleted()
+    # Write it to CSV file
+    final_file_path = read_configure_file('file_location', value='binary_deleted_process.csv')
+    backdoor.convert_to_csv(final_file_path, process_list)
+
+
 def read_configure_file(parameter, value=''):
     """This function will read parameters from configure.txt file and return the required value"""
     if parameter == 'file_location':
@@ -64,7 +73,8 @@ def get_arguments_options(args=sys.argv[1:]):
     """Parse arguments from command line and run specific functions"""
     parser = argparse.ArgumentParser(description="Select from functions below")
     parser.add_argument("-i", "--input", help="ena -> Find processes exposed to network attack;\
-                                                 sup -> Find suspicious process to unknown_ports")
+                                                 sup -> Find suspicious process to unknown_ports;\
+                                              bd -> Find processes running with binary deleted")
     option = parser.parse_args(args)
     return option
 
@@ -73,6 +83,8 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         write_to_csv_processes_exposed_network_attack()
         write_to_csv_suspicious_process_to_unknown_ports()
+        write_to_csv_process_running_binary_deleted()
+
     options = get_arguments_options(sys.argv[1:])
     if options.input == 'ena':
         # Find processes that is exposed for potential network attacks
@@ -80,3 +92,5 @@ if __name__ == "__main__":
     if options.input == 'sup':
         # Find suspicious process connecting to unknown ports
         write_to_csv_suspicious_process_to_unknown_ports()
+    if options.input == 'bd':
+        write_to_csv_process_running_binary_deleted()
