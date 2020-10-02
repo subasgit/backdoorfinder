@@ -103,6 +103,35 @@ def suspicious_process_to_unknown_ports(api_key):
     return process_list
 
 
+def processes_running_binary_deleted():
+    """Find processes running with binary deleted"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    process_list = []
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
+    # Find Processes whose binary has been deleted from the disk
+    result_process = instance.client.query("SELECT name, path, pid FROM processes WHERE on_disk = 0")
+    response = result_process.response
+    for entry in response:
+        process = {}
+        print('{} is running without binary file'.format(entry['name']))
+        process['date'] = d1
+        process['current_time'] = current_time
+        process['name'] = entry['name']
+        process['pid'] = entry['pid']
+        process['path'] = entry['path']
+        process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
+            check_processes_memory(entry['pid'])
+        process_list.append(process)
+        print(process)
+    return process_list
+
+
 def check_processes_memory(pid):
     """Find the pid and memory consumed by the process requested"""
     instance = osquery.SpawnInstance()
