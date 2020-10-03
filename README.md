@@ -8,26 +8,23 @@ osquery exposes an operating system as a high-performance relational database.
 This allows you to write SQL-based queries to explore operating system data. 
 With osquery, SQL tables represent abstract concepts such as running processes, 
 loaded kernel modules, open network connections, browser plugins, hardware events or file hashes.
-
-Install Osquery
-Based on your operating system, install osquery from  https://osquery.io/downloads/official/4.4.0
-
-and to install osquery python module run the following:
-
-```pip3 install osquery```
-
-Alternatively, to install from this repo, run the following:
-python setup.py build
-python setup.py install
-
+ 
 ### How to run the script
 
+Run requirements.txt file to install the dependencies
+    pip3 install -r requirements.txt
+    
+Before running the scripts, run configure.py to configure the variables like apikey and filepath
+    python3 configure.py
+
+Run the main script now.
 If you want to run all functions of backdoor, you can just run 
     python3 generate_backdoor_report.py
 
 To run specific functions, you can do python3 generate_backdoor_report.py -h to check options to run specific functions
     ena : Find processes exposed to network attack
-    sup : Find suspicious process to unknown_ports
+    spu : Find suspicious process to unknown_ports
+    bd  : Find malicious process running with binary deleted
     
     
 ### Finding processes that exposes TCP/UDP ports for network attacks
@@ -71,6 +68,15 @@ Click Register Now and obtain APIKey. Initially you get 25 free API credits. Ple
 
 Scope: I'll add support for VirusTotal lookup as well at later point.
 
+### Finding malicious processes which is running with its binary deleted
+
+function : processes_running_binary_deleted
+
+This function looks for malicious process running with its original binary file deleted on the disk. Frequently 
+attackers will run malicious processes like this. This also checks for memory used by this process and how much
+bytes are read/written on the disk
+
+These processes and ports are written in CSV file along with the time the script is executed 
 
 ### Writing the process output to csv file 
 
