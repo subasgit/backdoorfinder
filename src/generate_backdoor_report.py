@@ -71,10 +71,11 @@ def read_configure_file(parameter, value=''):
 
 def get_arguments_options(args=sys.argv[1:]):
     """Parse arguments from command line and run specific functions"""
-    parser = argparse.ArgumentParser(description="Select from functions below")
-    parser.add_argument("-i", "--input", help="ena -> Find processes exposed to network attack;\
-                                                 sup -> Find suspicious process to unknown_ports;\
-                                              bd -> Find processes running with binary deleted")
+    parser = argparse.ArgumentParser(description="Select from the options below. All functions will be run if no\
+                                                 options are given")
+    parser.add_argument('-ena', action='store_true', help='Find processes exposed to network attack')
+    parser.add_argument('-spu', action='store_true', help='Find suspicious process to unknown_ports')
+    parser.add_argument('-bd', action='store_true', help='Find malicious process running with binary deleted')
     option = parser.parse_args(args)
     return option
 
@@ -86,11 +87,12 @@ if __name__ == "__main__":
         write_to_csv_process_running_binary_deleted()
 
     options = get_arguments_options(sys.argv[1:])
-    if options.input == 'ena':
+    if options.ena:
         # Find processes that is exposed for potential network attacks
         write_to_csv_processes_exposed_network_attack()
-    if options.input == 'sup':
+    if options.spu:
         # Find suspicious process connecting to unknown ports
         write_to_csv_suspicious_process_to_unknown_ports()
-    if options.input == 'bd':
+    if options.bd:
+        # Find processes whose binary files are deleted
         write_to_csv_process_running_binary_deleted()
