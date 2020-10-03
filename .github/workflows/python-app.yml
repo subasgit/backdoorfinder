@@ -22,12 +22,7 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
-        echo "deb [arch=amd64] https://pkg.osquery.io/deb deb main" | sudo tee /etc/apt/sources.list.d/osquery.list 
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
-        sudo apt-get update -Y
-        sudo apt-get install osquery -Y
         python -m pip install --upgrade pip
-        pip3 install osquery
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
