@@ -18,13 +18,14 @@ Before running the scripts, run configure.py to configure the variables like api
     python3 configure.py
 
 Run the main script now.
-If you want to run all functions of backdoor, you can just run 
-    python3 generate_backdoor_report.py
+If you want to run all functions of backdoor one time, you can just run 
+    python3 generate_backdoor_report.py 
 
 To run specific functions, you can do python3 generate_backdoor_report.py -h to check options to run specific functions
-    ena : Find processes exposed to network attack
-    spu : Find suspicious process to unknown_ports
-    bd  : Find malicious process running with binary deleted
+    delay : You can specify delay between the runs. This can be used in combination with other options as well.
+    ena   : Find processes exposed to network attack
+    spu   : Find suspicious process to unknown_ports
+    bd    : Find malicious process running with binary deleted
     
     
 ### Finding processes that exposes TCP/UDP ports for network attacks
