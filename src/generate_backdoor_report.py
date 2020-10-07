@@ -77,20 +77,26 @@ def get_arguments_options(args=sys.argv[1:]):
     parser.add_argument('-ena', action='store_true', help='Find processes exposed to network attack')
     parser.add_argument('-spu', action='store_true', help='Find suspicious process to unknown_ports')
     parser.add_argument('-bd', action='store_true', help='Find malicious process running with binary deleted')
-    parser.add_argument('--delay', action='store', type=int, help='Enter the delay between the running the function')
+    parser.add_argument('-delay', action='store', type=int, help='Enter the delay between the running the function')
+    parser.add_argument('-freq', action='store', type=int, help='Enter the duration of the run in minutes')
     option = parser.parse_args(args)
     return option
 
 
 if __name__ == "__main__":
     counter = 1
-    while counter:
-        if len(sys.argv) == 1:
+    frequency = 1
+    options = get_arguments_options(sys.argv[1:])
+    if options.freq:
+        seconds = options.dur * 60
+        frequency = seconds / options.delay
+
+    while counter and frequency:
+        if not (options.ena or options.sup or options.bd):
             write_to_csv_processes_exposed_network_attack()
             write_to_csv_suspicious_process_to_unknown_ports()
             write_to_csv_process_running_binary_deleted()
 
-        options = get_arguments_options(sys.argv[1:])
         if options.ena:
             # Find processes that is exposed for potential network attacks
             write_to_csv_processes_exposed_network_attack()
@@ -102,5 +108,8 @@ if __name__ == "__main__":
             write_to_csv_process_running_binary_deleted()
         if options.delay:
             time.sleep(options.delay)
+            if options.freq:
+                frequency = frequency - 1
         else:
             counter = counter - 1
+            frequency = frequency - 1

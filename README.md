@@ -22,7 +22,9 @@ If you want to run all functions of backdoor one time, you can just run
     python3 generate_backdoor_report.py 
 
 To run specific functions, you can do python3 generate_backdoor_report.py -h to check options to run specific functions
-    delay : You can specify delay between the runs. This can be used in combination with other options as well.
+    delay : You can specify delay between the runs in seconds. This can be used in combination with other options as well.
+    freq  : Specify the time you need to run the script in minutes. For example, you can run the script every 5 mins 
+            for 1 hr by specifying the option like -delay 300 -freq 60 
     ena   : Find processes exposed to network attack
     spu   : Find suspicious process to unknown_ports
     bd    : Find malicious process running with binary deleted
