@@ -105,7 +105,7 @@ function: check_network_traffic
 
 This function could be used by any main functions to parse the network traffic used by specific process. Any process
 which is actively sending traffic out or receiving traffic can be identified with this function. This function can be 
-used only if endpoint is mac. 
+used only if endpoint is mac.
 
 ### Add configuration parameters like apikey and file paths
 
