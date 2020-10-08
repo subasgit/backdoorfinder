@@ -4,7 +4,7 @@ import requests
 import time
 from datetime import date
 import ipaddress
-
+import subprocess
 
 def processes_exposed_network_attack():
     """Very often Malware listens on port to provide command and control (C&C) \
@@ -72,6 +72,7 @@ def suspicious_process_to_unknown_ports(api_key):
         process['local_port'] = entry['local_port']
         process['remote_address'] = entry['remote_address']
         process['remote_port'] = entry['remote_port']
+        process['pid'] = entry['pid']
         print('Process {} has established connection from {} port {} to {} port {}'.format(entry['name'],
                                                                                            entry['local_address'],
                                                                                            entry['local_port'],
@@ -100,7 +101,8 @@ def suspicious_process_to_unknown_ports(api_key):
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
             check_processes_memory(entry['pid'])
         process_list.append(process)
-    return process_list
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
 def processes_running_binary_deleted():
@@ -142,6 +144,22 @@ def check_processes_memory(pid):
     for entry in response:
         return [entry['resident_size'], entry['disk_bytes_read'], entry['disk_bytes_written']]
 
+
+def check_network_traffic(process_list, traffic_in_bytes=None, traffic_out_bytes=None):
+    cmd = 'nettop -L 5'
+    output = subprocess.check_output(cmd, shell=True)
+    final_output= output.decode("utf-8")
+    nettop_entries = final_output.split('\n')
+    export_process_list = process_list[:]
+    for process in process_list:
+        cmd1 = process['name'] + "." + process['pid']
+        match_list = [x for x in nettop_entries if cmd1 in x]
+        first_line=match_list[0].split(',')
+        fifth_line=match_list[4].split(',')
+        process['traffic_in_bytes']= (int(fifth_line[4]) - int(first_line[4])) / 5
+        process['traffic_out_bytes']= (int(fifth_line[5]) - int(first_line[5])) /5
+        export_process_list.append(process)
+    return export_process_list
 
 def convert_to_csv(file_name, parameters):
     """Writes the parameters parsed to CSV file """

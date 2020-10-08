@@ -92,7 +92,7 @@ if __name__ == "__main__":
         frequency = seconds / options.delay
 
     while counter and frequency:
-        if not (options.ena or options.sup or options.bd):
+        if not (options.ena or options.spu or options.bd):
             write_to_csv_processes_exposed_network_attack()
             write_to_csv_suspicious_process_to_unknown_ports()
             write_to_csv_process_running_binary_deleted()
