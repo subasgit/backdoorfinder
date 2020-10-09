@@ -88,7 +88,7 @@ if __name__ == "__main__":
     frequency = 1
     options = get_arguments_options(sys.argv[1:])
     if options.freq:
-        seconds = options.dur * 60
+        seconds = options.freq * 60
         frequency = seconds / options.delay
 
     while counter and frequency:

@@ -36,10 +36,11 @@ def processes_exposed_network_attack():
         # Get the bytes read , written and memory used
         process['pid'] = entry['pid']
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_memory(entry['pid'])
+            check_processes_disksize(entry['pid'])
         process_list.append(process)
         # print(process_list)
-    return process_list
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
 def suspicious_process_to_unknown_ports(api_key):
@@ -99,7 +100,7 @@ def suspicious_process_to_unknown_ports(api_key):
                     process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
                     process['is_tor'] = output['data']['report']['anonymity']['is_tor']
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_memory(entry['pid'])
+            check_processes_disksize(entry['pid'])
         process_list.append(process)
     final_process_list = check_network_traffic(process_list)
     return final_process_list
@@ -128,13 +129,13 @@ def processes_running_binary_deleted():
         process['pid'] = entry['pid']
         process['path'] = entry['path']
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_memory(entry['pid'])
+            check_processes_disksize(entry['pid'])
         process_list.append(process)
-        print(process)
-    return process_list
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
-def check_processes_memory(pid):
+def check_processes_disksize(pid):
     """Find the pid and memory consumed by the process requested"""
     instance = osquery.SpawnInstance()
     instance.open()
