@@ -100,6 +100,13 @@ function: check_processes_memory
 This function can be used to check process memory, bytes written and read. This would add value to see if system 
 resources are consumed heavily by any process.
 
+### Check network traffic read and written by the process
+function: check_network_traffic
+
+This function could be used by any main functions to parse the network traffic used by specific process. Any process
+which is actively sending traffic out or receiving traffic can be identified with this function. This function can be 
+used only if endpoint is mac.
+
 ### Add configuration parameters like apikey and file paths
 
 File : Configure.py
