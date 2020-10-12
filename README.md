@@ -100,6 +100,13 @@ function: check_processes_memory
 This function can be used to check process memory, bytes written and read. This would add value to see if system 
 resources are consumed heavily by any process.
 
+### Checks CPU utilized by a process
+
+function: check_processes_cpu
+
+This function returns the CPU utilized by a process. This could potentially identify if established process is using
+lot of CPU
+
 ### Check network traffic read and written by the process
 function: check_network_traffic
 

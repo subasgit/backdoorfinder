@@ -36,10 +36,12 @@ def processes_exposed_network_attack():
         # Get the bytes read , written and memory used
         process['pid'] = entry['pid']
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_memory(entry['pid'])
+            check_processes_disksize(entry['pid'])
+        process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
         # print(process_list)
-    return process_list
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
 def suspicious_process_to_unknown_ports(api_key):
@@ -99,7 +101,8 @@ def suspicious_process_to_unknown_ports(api_key):
                     process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
                     process['is_tor'] = output['data']['report']['anonymity']['is_tor']
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_memory(entry['pid'])
+            check_processes_disksize(entry['pid'])
+        process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
     final_process_list = check_network_traffic(process_list)
     return final_process_list
@@ -128,14 +131,15 @@ def processes_running_binary_deleted():
         process['pid'] = entry['pid']
         process['path'] = entry['path']
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_memory(entry['pid'])
+            check_processes_disksize(entry['pid'])
+        process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
-        print(process)
-    return process_list
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
-def check_processes_memory(pid):
-    """Find the pid and memory consumed by the process requested"""
+def check_processes_disksize(pid):
+    """Find the disk read and write by a process"""
     instance = osquery.SpawnInstance()
     instance.open()
     result = instance.client.query("select resident_size,disk_bytes_read,disk_bytes_written from processes \
@@ -143,6 +147,19 @@ def check_processes_memory(pid):
     response = result.response
     for entry in response:
         return [entry['resident_size'], entry['disk_bytes_read'], entry['disk_bytes_written']]
+
+def check_processes_cpu(pid):
+    """Find the CPU utilized by the process"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    result = instance.client.query("SELECT pid, uid, name, \
+    ROUND(((user_time + system_time) / (cpu_time.tsb - cpu_time.itsb)) * 100, 2)\
+    AS percentage FROM processes, (SELECT (SUM(user) + SUM(nice) + SUM(system) + SUM(idle) * 1.0) \
+    AS tsb,SUM(COALESCE(idle, 0)) + SUM(COALESCE(iowait, 0)) AS itsb FROM cpu_time) AS cpu_time where\
+                                   pid='%s'" % pid)
+    response = result.response
+    for entry in response:
+        return (entry['percentage']+'%')
 
 
 def check_network_traffic(process_list, traffic_in_bytes=None, traffic_out_bytes=None):
