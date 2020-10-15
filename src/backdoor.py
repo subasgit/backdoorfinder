@@ -5,6 +5,8 @@ import time
 from datetime import date
 import ipaddress
 import subprocess
+import pandas
+
 
 def processes_exposed_network_attack():
     """Very often Malware listens on port to provide command and control (C&C) \
@@ -148,6 +150,7 @@ def check_processes_disksize(pid):
     for entry in response:
         return [entry['resident_size'], entry['disk_bytes_read'], entry['disk_bytes_written']]
 
+
 def check_processes_cpu(pid):
     """Find the CPU utilized by the process"""
     instance = osquery.SpawnInstance()
@@ -159,24 +162,26 @@ def check_processes_cpu(pid):
                                    pid='%s'" % pid)
     response = result.response
     for entry in response:
-        return (entry['percentage']+'%')
+        return entry['percentage'] + '%'
 
 
-def check_network_traffic(process_list, traffic_in_bytes=None, traffic_out_bytes=None):
+def check_network_traffic(process_list):
+    """ Checks network traffic in and out of the process"""
     cmd = 'nettop -L 5'
     output = subprocess.check_output(cmd, shell=True)
-    final_output= output.decode("utf-8")
+    final_output = output.decode("utf-8")
     nettop_entries = final_output.split('\n')
     export_process_list = process_list[:]
     for process in process_list:
         cmd1 = process['name'] + "." + process['pid']
         match_list = [x for x in nettop_entries if cmd1 in x]
-        first_line=match_list[0].split(',')
-        fifth_line=match_list[4].split(',')
-        process['traffic_in_bytes']= (int(fifth_line[4]) - int(first_line[4])) / 5
-        process['traffic_out_bytes']= (int(fifth_line[5]) - int(first_line[5])) /5
+        first_line = match_list[0].split(',')
+        fifth_line = match_list[4].split(',')
+        process['traffic_in_bytes'] = (int(fifth_line[4]) - int(first_line[4])) / 5
+        process['traffic_out_bytes'] = (int(fifth_line[5]) - int(first_line[5])) / 5
         export_process_list.append(process)
     return export_process_list
+
 
 def convert_to_csv(file_name, parameters):
     """Writes the parameters parsed to CSV file """
@@ -193,9 +198,9 @@ def convert_to_csv(file_name, parameters):
                     final_list = param
             # Adding header in the csv file
             # Adding the number of iteration
-            write_obj.write('iteration' + ",")
+            write_obj.write('iteration')
             for key in final_list:
-                write_obj.write(key + ",")
+                write_obj.write("," + key)
             write_obj.write("\n")
 
     # Find the last line in CSV file and increase the iteration number for further run
@@ -211,7 +216,14 @@ def convert_to_csv(file_name, parameters):
         # Adding entries
         for process in parameters:
             # Append Iteration value
-            write_obj.write(str(iteration_value) + ",")
+            write_obj.write(str(iteration_value))
             for key, value in process.items():
-                write_obj.write(str(value) + ",")
+                write_obj.write("," + str(value))
             write_obj.write("\n")
+
+
+def convert_csv_to_json(csv_file_path):
+    """Converts CSV to json file"""
+    df = pandas.read_csv(csv_file_path)
+    json_file = csv_file_path.strip('.csv')+".json"
+    df.to_json(json_file, orient='records')

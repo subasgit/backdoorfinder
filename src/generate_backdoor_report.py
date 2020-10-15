@@ -17,6 +17,10 @@ def write_to_csv_processes_exposed_network_attack():
     backdoor.convert_to_csv(final_file_path, process_list)
     print("Processes exposed to network attacks are written in process_exposed_network_attack.csv")
 
+    # Write the CSV file to Json
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Processes exposed to network attacks are written in process_exposed_network_attack.json")
+
 
 def write_to_csv_suspicious_process_to_unknown_ports():
     """ Find suspicious processes from your hosts connecting to unknown ports. If you want to verify \
@@ -36,14 +40,23 @@ def write_to_csv_suspicious_process_to_unknown_ports():
     backdoor.convert_to_csv(final_file_path, process_list)
     print("Suspicious process connecting to unknown ports are written in suspicious_process_to_unknown_ports.csv ")
 
+    # Write the CSV file to Json
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Suspicious process connecting to unknown ports are written in suspicious_process_to_unknown_ports.json ")
+
 
 def write_to_csv_process_running_binary_deleted():
     """ Find processes running on the endpoint whose binary has been deleted from disk"""
     # Processes that are running whose binary has been deleted from the disk
     process_list = backdoor.processes_running_binary_deleted()
+
     # Write it to CSV file
     final_file_path = read_configure_file('file_location', value='binary_deleted_process.csv')
     backdoor.convert_to_csv(final_file_path, process_list)
+
+    # Write the CSV file to Json
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Processes running with its binary deleted are written in binary_deleted_process.json")
 
 
 def read_configure_file(parameter, value=''):
