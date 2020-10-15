@@ -93,6 +93,14 @@ script and populate the parameters that is passed on to it. If the file exists, 
 to the csv file. Each time this function is called by a procedure, it appends with iteration number. This will help in
 filtering the latest runs
 
+### Writing the process output in json format
+
+function: convert_csv_to_json
+
+This function will create a json file from the CSV file. Supporting different formats to enhance the
+flexibility to integrate with other applications
+
+
 ### Checks memory and bytes written and read by the process
 
 function: check_processes_memory
@@ -131,6 +139,6 @@ This function gives the flexibility to store the file at the location you intent
 configure.txt If user dont have any preference of file path, file will be stored in the directory where the script 
 is executed. 
 
-
+### 
 
 
