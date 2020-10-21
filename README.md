@@ -101,11 +101,11 @@ This function will create a json file from the CSV file. Supporting different fo
 flexibility to integrate with other applications
 
 
-### Checks memory and bytes written and read by the process
+### Checks disk bytes written and read by the process
 
-function: check_processes_memory
+function: check_processes_disksize
 
-This function can be used to check process memory, bytes written and read. This would add value to see if system 
+This function can be used to check disk bytes written and read at any point of time. This would add value to see if system 
 resources are consumed heavily by any process.
 
 ### Checks CPU utilized by a process
