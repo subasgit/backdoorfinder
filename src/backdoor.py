@@ -142,6 +142,44 @@ def processes_running_binary_deleted():
     return final_process_list
 
 
+def suspicious_chrome_extensions():
+    """Detecting Chrome extensions which are at high risk"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    process_list = []
+
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
+    result_process = instance.client.query(
+        "SELECT uid,name,identifier,permissions,optional_permissions from chrome_extensions WHERE \
+        chrome_extensions.uid IN (SELECT uid FROM users) AND (permissions LIKE('%clipboardWrite%') \
+        OR permissions LIKE ('%<all_urls>%') OR permissions LIKE ('%tabs%') \
+        OR permissions LIKE ('%cookies%') OR permissions like ('%://*/%'))")
+    response = result_process.response
+    for entry in response:
+        process = {}
+        process['date'] = d1
+        process['current_time'] = current_time
+        process['name'] = entry['name']
+        process['identifier'] = entry['identifier']
+        process['permissions'] = entry['permissions']
+        process['optional_permissions'] = entry['optional_permissions']
+        url = "https://chrome.google.com/webstore/detail/{}".format(entry['identifier'])
+        request = requests.get(url)
+        if request.status_code == 200:
+            print('Web site exists')
+            process['is_website_exist'] = 'yes'
+        else:
+            print('Web site does not exist')
+            process['is_website_exist'] = 'no'
+        process_list.append(process)
+    return process_list
+
+
 def check_processes_disksize(pid):
     """Find the disk read and write by a process"""
     instance = osquery.SpawnInstance()
