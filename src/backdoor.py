@@ -177,7 +177,8 @@ def suspicious_chrome_extensions():
             print('Web site does not exist')
             process['is_website_exist'] = 'no'
         process_list.append(process)
-    return process_list
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
 def check_processes_disksize(pid):
