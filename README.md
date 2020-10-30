@@ -8,6 +8,8 @@ osquery exposes an operating system as a high-performance relational database.
 This allows you to write SQL-based queries to explore operating system data. 
 With osquery, SQL tables represent abstract concepts such as running processes, 
 loaded kernel modules, open network connections, browser plugins, hardware events or file hashes.
+
+Install osquery https://osquery.io/downloads/ according to your OS
  
 ### How to run the script
 
@@ -80,6 +82,17 @@ attackers will run malicious processes like this. This also checks for memory us
 bytes are read/written on the disk
 
 These processes and ports are written in CSV file along with the time the script is executed 
+
+### Finding suspicious browser extensions for chrome
+
+function : suspicious_chrome_extensions
+
+This function looks for suspicious browser extensions that allows access to modify data copied and pasted into 
+clipboard, allows access to all URL the endpoint visited and allows to access all cookies. This extensions which
+has permissions more than its supposed to have are in high risk category. Google periodically identifies
+suspicious chrome extensions and removes it.But once installed in the endpoint, it can silently listen to all activities
+So running this function will cross check if the extensions are still ligitimate and gets served in chrome
+webstore.
 
 ### Writing the process output to csv file 
 
