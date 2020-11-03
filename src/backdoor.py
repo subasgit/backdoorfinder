@@ -177,8 +177,31 @@ def suspicious_chrome_extensions():
             print('Web site does not exist')
             process['is_website_exist'] = 'no'
         process_list.append(process)
-    final_process_list = check_network_traffic(process_list)
-    return final_process_list
+    #final_process_list = check_network_traffic(process_list)
+    return process_list
+
+def find_usb_connected():
+    instance = osquery.SpawnInstance()
+    instance.open()
+    process_list = []
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
+    result_process = instance.client.query("SELECT action, uid, SUBSTR(target_path, 18) AS path, \
+                                            SUBSTR(md5, 0, 8) AS hash, time FROM file_events WHERE sha1 <> '' \
+                                            AND target_path NOT LIKE '%DS_Store'")
+    response = result_process.response
+    for entry in response:
+        process = {}
+        process['date'] = d1
+        process['current_time'] = current_time
+        process['name'] = entry['name']
+        process['action'] = entry['action']
+        process_list.append(process)
+    return process_list
 
 
 def check_processes_disksize(pid):
