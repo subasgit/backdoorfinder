@@ -142,7 +142,7 @@ def processes_running_binary_deleted():
     return final_process_list
 
 
-def suspicious_chrome_extensions():
+def find_suspicious_chrome_extensions():
     """Detecting Chrome extensions which are at high risk"""
     instance = osquery.SpawnInstance()
     instance.open()
@@ -198,7 +198,8 @@ def find_usb_connected():
         process = {}
         process['date'] = d1
         process['current_time'] = current_time
-        process['name'] = entry['name']
+        process['name'] = entry['target_path']
+        process['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(entry['time']))
         process['action'] = entry['action']
         process_list.append(process)
     return process_list
