@@ -53,10 +53,26 @@ def write_to_csv_process_running_binary_deleted():
     # Write it to CSV file
     final_file_path = read_configure_file('file_location', value='binary_deleted_process.csv')
     backdoor.convert_to_csv(final_file_path, process_list)
+    print("Processes running with its binary deleted are written in binary_deleted_process.csv")
 
     # Write the CSV file to Json
     backdoor.convert_csv_to_json(final_file_path)
     print("Processes running with its binary deleted are written in binary_deleted_process.json")
+
+
+def write_to_csv_suspicious_chrome_extensions():
+    """Find chrome extensions which are suspicious"""
+    # Find Suspicious Chrome extensions
+    process_list = backdoor.find_suspicious_chrome_extensions()
+
+    # Write it to CSV file
+    final_file_path = read_configure_file('file_location', value='suspicious_chrome_extensions.csv')
+    backdoor.convert_to_csv(final_file_path, process_list)
+    print("Suspicious chrome extensions names are written in suspicious_chrome_extensions.csv")
+
+    # Write the CSV file to JSON
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Suspicious chrome extensions names are written in suspicious_chrome_extensions.json")
 
 
 def read_configure_file(parameter, value=''):
@@ -70,7 +86,7 @@ def read_configure_file(parameter, value=''):
             if 'default' in file_location:
                 final_file_path = value
             else:
-                final_file_path = file_location + '/'+value
+                final_file_path = file_location + '/' + value
         return final_file_path
     if parameter == 'api_key':
         with open("configure.txt", 'r') as f1:
