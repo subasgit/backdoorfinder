@@ -181,6 +181,7 @@ def find_suspicious_chrome_extensions():
     return process_list
 
 def find_usb_connected():
+    """Find USB connected to the endpoint and new files created/modified/deleted"""
     instance = osquery.SpawnInstance()
     instance.open()
     process_list = []
