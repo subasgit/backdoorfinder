@@ -77,7 +77,7 @@ def write_to_csv_suspicious_chrome_extensions():
 
 def write_to_csv_find_usb_connected():
     """Find USB connected and files written in the USB disk"""
-    # Find if USB is connected and files are written to the disk
+    # Find if USB is connected and files are written to it
     process_list = backdoor.find_usb_connected()
 
     # Write it to CSV file
@@ -122,6 +122,7 @@ def get_arguments_options(args=sys.argv[1:]):
     parser.add_argument('-spu', action='store_true', help='Find suspicious process to unknown_ports')
     parser.add_argument('-bd', action='store_true', help='Find malicious process running with binary deleted')
     parser.add_argument('-ce', action='store_true', help='Find suspicious Chrome extensions')
+    parser.add_argument('-usb', action='store_true', help='Find files created/modified/deleted from USB disk')
     parser.add_argument('-delay', action='store', type=int, help='Enter the delay between the running the function')
     parser.add_argument('-freq', action='store', type=int, help='Enter the duration of the run in minutes')
     option = parser.parse_args(args)
@@ -142,6 +143,7 @@ if __name__ == "__main__":
             write_to_csv_suspicious_process_to_unknown_ports()
             write_to_csv_process_running_binary_deleted()
             write_to_csv_suspicious_chrome_extensions()
+            write_to_csv_find_usb_connected()
 
         if options.ena:
             # Find processes that is exposed for potential network attacks
@@ -155,6 +157,10 @@ if __name__ == "__main__":
         if options.ce:
             # Find Suspicious Chrome extensions
             write_to_csv_suspicious_chrome_extensions()
+        if options.usb:
+            # Find files written to USB disk
+            write_to_csv_find_usb_connected()
+
         if options.delay:
             time.sleep(options.delay)
             if options.freq:
