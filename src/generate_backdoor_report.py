@@ -75,6 +75,21 @@ def write_to_csv_suspicious_chrome_extensions():
     print("Suspicious chrome extensions names are written in suspicious_chrome_extensions.json")
 
 
+def write_to_csv_find_usb_connected():
+    """Find USB connected and files written in the USB disk"""
+    # Find if USB is connected and files are written to the disk
+    process_list = backdoor.find_usb_connected()
+
+    # Write it to CSV file
+    final_file_path = read_configure_file('file_location', value='files_written_in_USB.csv')
+    backdoor.convert_to_csv(final_file_path, process_list)
+    print("Files created/Modified in USB are written in files_written_in_USB.csv")
+
+    # Write the CSV file to JSON
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Files created/Modified in USB are written in files_written_in_USB.json")
+
+
 def read_configure_file(parameter, value=''):
     """This function will read parameters from configure.txt file and return the required value"""
     if parameter == 'file_location':
