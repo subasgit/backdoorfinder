@@ -106,6 +106,7 @@ def get_arguments_options(args=sys.argv[1:]):
     parser.add_argument('-ena', action='store_true', help='Find processes exposed to network attack')
     parser.add_argument('-spu', action='store_true', help='Find suspicious process to unknown_ports')
     parser.add_argument('-bd', action='store_true', help='Find malicious process running with binary deleted')
+    parser.add_argument('-ce', action='store_true', help='Find suspicious Chrome extensions')
     parser.add_argument('-delay', action='store', type=int, help='Enter the delay between the running the function')
     parser.add_argument('-freq', action='store', type=int, help='Enter the duration of the run in minutes')
     option = parser.parse_args(args)
@@ -125,6 +126,7 @@ if __name__ == "__main__":
             write_to_csv_processes_exposed_network_attack()
             write_to_csv_suspicious_process_to_unknown_ports()
             write_to_csv_process_running_binary_deleted()
+            write_to_csv_suspicious_chrome_extensions()
 
         if options.ena:
             # Find processes that is exposed for potential network attacks
@@ -135,6 +137,9 @@ if __name__ == "__main__":
         if options.bd:
             # Find processes whose binary files are deleted
             write_to_csv_process_running_binary_deleted()
+        if options.ce:
+            # Find Suspicious Chrome extensions
+            write_to_csv_suspicious_chrome_extensions()
         if options.delay:
             time.sleep(options.delay)
             if options.freq:
