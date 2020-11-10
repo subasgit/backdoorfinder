@@ -139,6 +139,7 @@ def processes_running_binary_deleted():
         process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
     final_process_list = check_network_traffic(process_list)
+    print(final_process_list)
     return final_process_list
 
 
@@ -177,6 +178,7 @@ def find_suspicious_chrome_extensions():
             print('Web site does not exist')
             process['is_website_exist'] = 'no'
         process_list.append(process)
+        print(process_list)
     #final_process_list = check_network_traffic(process_list)
     return process_list
 
@@ -203,6 +205,7 @@ def find_usb_connected():
         process['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(entry['time']))
         process['action'] = entry['action']
         process_list.append(process)
+        print(process_list)
     return process_list
 
 
