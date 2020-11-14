@@ -142,8 +142,8 @@ if __name__ == "__main__":
             write_to_csv_processes_exposed_network_attack()
             write_to_csv_suspicious_process_to_unknown_ports()
             write_to_csv_process_running_binary_deleted()
-            write_to_csv_suspicious_chrome_extensions()
-            write_to_csv_find_usb_connected()
+            #write_to_csv_suspicious_chrome_extensions()
+            #write_to_csv_find_usb_connected()
 
         if options.ena:
             # Find processes that is exposed for potential network attacks
