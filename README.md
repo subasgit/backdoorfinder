@@ -91,8 +91,18 @@ This function looks for suspicious browser extensions that allows access to modi
 clipboard, allows access to all URL the endpoint visited and allows to access all cookies. This extensions which
 has permissions more than its supposed to have are in high risk category. Google periodically identifies
 suspicious chrome extensions and removes it.But once installed in the endpoint, it can silently listen to all activities
-So running this function will cross check if the extensions are still ligitimate and gets served in chrome
-webstore.
+So running this function will cross check if the extensions are still legitimate and gets served in chrome
+web store.
+
+### Finding File creation/updating/deletion by connecting a external USB device
+
+This function identifies files that are copied to or from external USB device that is plugged to the endpoint using 
+File Integrity monitor(FIM).This function is compatable only with Mac as of now and can provide a
+basic level of data loss protection.file integrity monitoring (FIM) uses inotify (Linux) and FSEvents(Mac OS X) 
+to monitor files and directories for changes. As files/directories are written, read and deleted, 
+events are created. When USB is connected to macOS, it automatically mounts to /VOLUMES directory. Any changes 
+to that directory is monitored by FIM. This actions are captured along with disk_events and mounts table
+to identify the files that's copied/updated from USB device.
 
 ### Writing the process output to csv file 
 
