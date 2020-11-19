@@ -86,8 +86,8 @@ def write_to_csv_find_usb_connected():
     print("Files created/Modified in USB are written in files_written_in_USB.csv")
 
     # Write the CSV file to JSON
-    backdoor.convert_csv_to_json(final_file_path)
-    print("Files created/Modified in USB are written in files_written_in_USB.json")
+    #backdoor.convert_csv_to_json(final_file_path)
+    #print("Files created/Modified in USB are written in files_written_in_USB.json")
 
 
 def read_configure_file(parameter, value=''):
