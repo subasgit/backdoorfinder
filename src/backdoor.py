@@ -199,8 +199,8 @@ def find_usb_connected():
         process['name'] = entry['target_path']
         process['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(entry['time']))
         process['action'] = entry['action']
+        process['filepath'] = entry['path']
         process_list.append(process)
-        print(process_list)
     return process_list
 
 
