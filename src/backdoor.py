@@ -177,6 +177,7 @@ def find_suspicious_chrome_extensions():
         process_list.append(process)
     return process_list
 
+
 def find_usb_connected():
     """Find USB connected to the endpoint and new files created/modified/deleted"""
     instance = osquery.SpawnInstance()
@@ -202,6 +203,33 @@ def find_usb_connected():
         process['filepath'] = entry['path']
         process_list.append(process)
     return process_list
+
+
+def check_top_processes_large_resident_memory():
+    """Find Processes that has the largest resident memory"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    process_list = []
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
+    # Find Processes which has the largest resident memory
+    result_process = instance.client.query("select pid, name, uid, resident_size from processes \
+                                            order by resident_size desc limit 10")
+    response = result_process.response
+    for entry in response:
+        process = {}
+        process['date'] = d1
+        process['current_time'] = current_time
+        process['name'] = entry['name']
+        process['pid'] = entry['pid']
+        process['resident_size'] = entry['resident_size']
+        process_list.append(process)
+    final_process_list = check_network_traffic(process_list)
+    return final_process_list
 
 
 def check_processes_disksize(pid):
