@@ -96,6 +96,8 @@ web store.
 
 ### Finding File creation/updating/deletion by connecting a external USB device
 
+function :  write_to_csv_find_usb_connected
+
 This function identifies files that are copied to or from external USB device that is plugged to the endpoint using 
 File Integrity monitor(FIM).This function is compatable only with Mac as of now and can provide a
 basic level of data loss protection.file integrity monitoring (FIM) uses inotify (Linux) and FSEvents(Mac OS X) 
