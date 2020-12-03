@@ -100,6 +100,10 @@ def write_to_csv_process_largest_resident_memory():
     backdoor.convert_to_csv(final_file_path, process_list)
     print("Large resident memory process are written in large_memory_resident_size_process.csv")
 
+    # Write the CSV file to JSON
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Large resident memory process are written in large_memory_resident_size_process.json")
+
 
 def read_configure_file(parameter, value=''):
     """This function will read parameters from configure.txt file and return the required value"""
