@@ -86,8 +86,19 @@ def write_to_csv_find_usb_connected():
     print("Files created/Modified in USB are written in files_written_in_USB.csv")
 
     # Write the CSV file to JSON
-    # backdoor.convert_csv_to_json(final_file_path)
-    # print("Files created/Modified in USB are written in files_written_in_USB.json")
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Files created/Modified in USB are written in files_written_in_USB.json")
+
+
+def write_to_csv_process_largest_resident_memory():
+    """Find top 10 process that occupy largest resident memory"""
+    # Processes that are running with largest resident memory
+    process_list = backdoor.check_processes_large_resident_memory()
+
+    ## Write it to CSV file
+    final_file_path = read_configure_file('file_location', value='large_memory_resident_size_process.csv')
+    backdoor.convert_to_csv(final_file_path, process_list)
+    print("Large resident memory process are written in large_memory_resident_size_process.csv")
 
 
 def read_configure_file(parameter, value=''):
