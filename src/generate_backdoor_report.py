@@ -150,6 +150,10 @@ if __name__ == "__main__":
     options = get_arguments_options(sys.argv[1:])
     if options.freq:
         seconds = options.freq * 60
+        if options.delay:
+            delay = options.delay * 60
+        else:
+            delay = 60
         frequency = seconds / options.delay
 
     while counter and frequency:
@@ -176,7 +180,7 @@ if __name__ == "__main__":
             # Find files written to USB disk
             write_to_csv_find_usb_connected()
 
-        if options.delay:
+        if delay:
             time.sleep(options.delay)
             if options.freq:
                 frequency = frequency - 1
