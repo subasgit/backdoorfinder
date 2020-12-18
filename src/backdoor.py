@@ -205,7 +205,7 @@ def find_usb_connected():
     return process_list
 
 
-def check_top_processes_large_resident_memory():
+def check_processes_large_resident_memory():
     """Find Processes that has the largest resident memory"""
     instance = osquery.SpawnInstance()
     instance.open()
