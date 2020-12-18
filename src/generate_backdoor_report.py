@@ -93,7 +93,7 @@ def write_to_csv_find_usb_connected():
 def write_to_csv_process_largest_resident_memory():
     """Find top 10 process that occupy largest resident memory"""
     # Processes that are running with largest resident memory
-    process_list = backdoor.check_top_processes_large_resident_memory()
+    process_list = backdoor.check_processes_large_resident_memory()
 
     ## Write it to CSV file
     final_file_path = read_configure_file('file_location', value='large_memory_resident_size_process.csv')
@@ -183,6 +183,7 @@ if __name__ == "__main__":
             # Find files written to USB disk
             write_to_csv_find_usb_connected()
         if options.lmem:
+            # Find process having large resident memory
             write_to_csv_process_largest_resident_memory()
 
         if delay:

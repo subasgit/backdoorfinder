@@ -106,6 +106,14 @@ events are created. When USB is connected to macOS, it automatically mounts to /
 to that directory is monitored by FIM. This actions are captured along with disk_events and mounts table
 to identify the files that's copied/updated from USB device.
 
+### Find processes which has the largest resident memory
+
+function : check_processes_large_resident_memory
+
+Resident memory is the memory occupied by a process in main memory. Ideally processes occupying large resident memory 
+should be cross checked with known whitelisted process to see if any malicious processes are running in your system
+This function also checks if the process transfer bytes in the network 
+
 ### Writing the process output to csv file 
 
 function: convert_to_csv
