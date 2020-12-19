@@ -114,6 +114,8 @@ Resident memory is the memory occupied by a process in main memory. Ideally proc
 should be cross checked with known whitelisted process to see if any malicious processes are running in your system
 This function also checks if the process transfer bytes in the network 
 
+## Find applications versions to cross check for Vulnerability
+
 ### Writing the process output to csv file 
 
 function: convert_to_csv
