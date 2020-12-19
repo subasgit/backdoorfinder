@@ -148,6 +148,7 @@ def get_arguments_options(args=sys.argv[1:]):
 if __name__ == "__main__":
     counter = 1
     frequency = 1
+    delay = 0
     options = get_arguments_options(sys.argv[1:])
     if options.freq:
         seconds = options.freq * 60

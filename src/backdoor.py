@@ -232,6 +232,31 @@ def check_processes_large_resident_memory():
     return final_process_list
 
 
+def check_application_versions():
+    instance = osquery.SpawnInstance()
+    instance.open()
+    process_list = []
+    # Parse today's date and time
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
+    # Find Processes which has the largest resident memory
+    result_process = instance.client.query("select name,bundle_version,\
+                        category from apps")
+    response = result_process.response
+    for entry in response:
+        for entry in response:
+            process = {}
+            process['date'] = d1
+            process['current_time'] = current_time
+            process['name'] = entry['name']
+            process['bundle_version'] = entry['bundle_version']
+            process['category'] = entry['category']
+            process_list.append(process)
+    return process_list
+
 def check_processes_disksize(pid):
     """Find the disk read and write by a process"""
     instance = osquery.SpawnInstance()
