@@ -116,6 +116,11 @@ This function also checks if the process transfer bytes in the network
 
 ## Find applications versions to cross check for Vulnerability
 
+function : write_to_csv_check_application_versions()
+
+This function lists all application running on the endpoint along with its version. This could be used to check if your
+application is vulnerable to any attacks
+
 ### Writing the process output to csv file 
 
 function: convert_to_csv
