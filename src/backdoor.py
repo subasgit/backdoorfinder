@@ -83,6 +83,11 @@ def suspicious_process_to_unknown_ports(api_key):
                                                                                            entry['remote_address'],
                                                                                            entry['remote_port']))
 
+        # Check memory and CPU usage of each process
+        process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
+            check_processes_disksize(entry['pid'])
+        process['cpu_usage'] = check_processes_cpu(entry['pid'])
+
         # Check whether the remote_address is a known malicious IP address if API Key is provided
         if api_key != 'none' and api_key != 'None':
             if not ipaddress.ip_address(entry['remote_address']).is_private:
@@ -102,9 +107,11 @@ def suspicious_process_to_unknown_ports(api_key):
                     process['is_vpn'] = output['data']['report']['anonymity']['is_vpn']
                     process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
                     process['is_tor'] = output['data']['report']['anonymity']['is_tor']
-        process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
-            check_processes_disksize(entry['pid'])
-        process['cpu_usage'] = check_processes_cpu(entry['pid'])
+            else:
+                process['is_private'] = 'true'
+                process['detections'] = process['detection_rate'] = process['country'] = process['isp'] = \
+                    process['is_proxy'] = process['is_webproxy'] = process['is_vpn'] = process['is_hosting'] = \
+                    process['is_tor'] = "N\A"
         process_list.append(process)
     final_process_list = check_network_traffic(process_list)
     return final_process_list
@@ -164,8 +171,6 @@ def find_suspicious_chrome_extensions():
         process['current_time'] = current_time
         process['name'] = entry['name']
         process['identifier'] = entry['identifier']
-        process['permissions'] = entry['permissions']
-        process['optional_permissions'] = entry['optional_permissions']
         url = "https://chrome.google.com/webstore/detail/{}".format(entry['identifier'])
         request = requests.get(url)
         if request.status_code == 200:
@@ -174,6 +179,8 @@ def find_suspicious_chrome_extensions():
         else:
             print('Web site does not exist')
             process['is_website_exist'] = 'no'
+        process['permissions'] = entry['permissions']
+        process['optional_permissions'] = entry['optional_permissions']
         process_list.append(process)
     return process_list
 

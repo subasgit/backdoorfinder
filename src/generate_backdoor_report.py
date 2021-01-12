@@ -104,6 +104,18 @@ def write_to_csv_process_largest_resident_memory():
     backdoor.convert_csv_to_json(final_file_path)
     print("Large resident memory process are written in large_memory_resident_size_process.json")
 
+def write_to_csv_check_application_versions():
+    """Find application and its corresponding versions """
+    process_list = backdoor.check_application_version()
+
+    ## Write to CSV file
+    final_file_path = read_configure_file('file_location', value='application_and_versions.csv')
+    backdoor.convert_to_csv(final_file_path, process_list)
+    print("Application and versions are written in application_and_versions.csv")
+
+    ## Write the CSV file to JSON
+    backdoor.convert_csv_to_json(final_file_path)
+    print("Application and versions are written in application_and_versions.json")
 
 def read_configure_file(parameter, value=''):
     """This function will read parameters from configure.txt file and return the required value"""
@@ -139,6 +151,7 @@ def get_arguments_options(args=sys.argv[1:]):
     parser.add_argument('-ce', action='store_true', help='Find suspicious Chrome extensions')
     parser.add_argument('-usb', action='store_true', help='Find files created/modified/deleted from USB disk')
     parser.add_argument('-lmem', action='store_true', help='Find processes that has large resident memory')
+    parser.add_argument('-appcheck', action='store_true', help='Find applications running and its versions')
     parser.add_argument('-delay', action='store', type=int, help='Enter the delay between the running the function')
     parser.add_argument('-freq', action='store', type=int, help='Enter the duration of the run in minutes')
     option = parser.parse_args(args)
@@ -166,7 +179,7 @@ if __name__ == "__main__":
             write_to_csv_suspicious_chrome_extensions()
             write_to_csv_find_usb_connected()
             write_to_csv_process_largest_resident_memory()
-
+            write_to_csv_check_application_versions()
 
         if options.ena:
             # Find processes that is exposed for potential network attacks
@@ -186,6 +199,9 @@ if __name__ == "__main__":
         if options.lmem:
             # Find process having large resident memory
             write_to_csv_process_largest_resident_memory()
+        if options.appcheck:
+            # Find applications and its versions
+            write_to_csv_check_application_versions()
 
         if delay:
             time.sleep(options.delay)
