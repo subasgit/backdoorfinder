@@ -24,9 +24,25 @@ Click Register Now and obtain APIKey. Initially you get 25 free API credits. Ple
 
 Before running the scripts, run configure.py to configure the variables like api key,file path 
 where you want to store the output files and OS you are running the script on
- 	
- **Run : python3 configure.py**
- 	
+ 
+```
+python3 configure.py
+ ```
+ 
+ 
+ kjkjk
+ 
+ ```python
+     if options.duration:
+        seconds = options.duration * 60
+        if options.freq:
+            delay = options.freq * 60
+        else:
+            delay = 60
+        duration = seconds / delay
+ ```
+ 
+ 
 Step 7 : Now you are all set! You can run the whole script or run only specific functions you are interested in
 **Run : python3 generate_backdoor_report.py -h** -> *To explore the options to run*
 
