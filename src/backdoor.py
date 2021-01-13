@@ -8,7 +8,7 @@ import subprocess
 import pandas
 
 
-def processes_exposed_network_attack():
+def processes_exposed_network_attack(hw_type):
     """Very often Malware listens on port to provide command and control (C&C) \
     or direct shell access for an attacker.Running this query periodically and diffing \
     with the last known good results will help the security team to identify malicious \
@@ -41,10 +41,11 @@ def processes_exposed_network_attack():
             check_processes_disksize(entry['pid'])
         process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
-        # print(process_list)
-    final_process_list = check_network_traffic(process_list)
+    if "Apple" in hw_type:
+        final_process_list = check_network_traffic(process_list)
+    else:
+        return process_list
     return final_process_list
-
 
 def suspicious_process_to_unknown_ports(api_key):
     """ Lists processes with IP traffic to remote ports not in (80, 443) and this can potentially \

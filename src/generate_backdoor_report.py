@@ -11,7 +11,7 @@ def write_to_csv_processes_exposed_network_attack():
     final_file_path = read_configure_file('file_location', value='process_exposed_network_attack.csv')
 
     # Get the processes exposed to network attacks
-    process_list = backdoor.processes_exposed_network_attack()
+    process_list = backdoor.processes_exposed_network_attack(hw_type)
 
     # Write it to CSV file
     backdoor.convert_to_csv(final_file_path, process_list)
@@ -139,6 +139,12 @@ def read_configure_file(parameter, value=''):
                 else:
                     value = "none"
         return value
+    if parameter == 'hardware_vendor':
+        with open("configure.txt", 'r') as f1:
+            for line in f1:
+                if "hardware_vendor" in line:
+                    hardware_vendor_name = line.split("= ", 1)[1]
+        return hardware_vendor_name
 
 
 def get_arguments_options(args=sys.argv[1:]):
@@ -162,6 +168,9 @@ if __name__ == "__main__":
     counter = 1
     frequency = 1
     delay = 0
+    # Read and store the hardware vendor name
+    hw_type = read_configure_file('hardware_vendor')
+
     options = get_arguments_options(sys.argv[1:])
     if options.freq:
         seconds = options.freq * 60
