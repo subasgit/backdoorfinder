@@ -3,34 +3,67 @@
 
 ### Prerequisites:
 
-Requires Python3, Osquery. 
-osquery exposes an operating system as a high-performance relational database. 
-This allows you to write SQL-based queries to explore operating system data. 
-With osquery, SQL tables represent abstract concepts such as running processes, 
-loaded kernel modules, open network connections, browser plugins, hardware events or file hashes.
+Requires Python3, Osquery. Osquery exposes an operating system as a high-performance relational database. This allows you to write SQL-based queries to explore operating system data. With osquery, SQL tables represent abstract concepts such as running processes, loaded kernel modules, open network connections, browser plugins, hardware events or file hashes.
 
-Install osquery https://osquery.io/downloads/ according to your OS
+Step 1 : Install Python according to your OS
+	
+Step 2 : Install osquery https://osquery.io/downloads/ according to your OS 
+
+Step 3: Copy all the source code using git clone
+Git clone https://github.com/subasgit/backdoorfinder.git 
+
+Step 4: Run requirements.txt file to install the dependencies pip3 install -r requirements.txt
+
+Step 5:(Optional)Some functions have options to check Threat intelligence for the maliciousness of the remote IP address. I integrated with APIVOID to perform that lookup. If you prefer not to use that, then you don't need to do this step
+
+How to get API VOID API Key? https://www.apivoid.com/api/ip-reputation/
+Click Register Now and obtain APIKey. Initially you get 25 free API credits. Please review the pricing details.
+
  
-### How to run the script
+###### How to run the script
 
-Run requirements.txt file to install the dependencies
-    pip3 install -r requirements.txt
+Before running the scripts, run configure.py to configure the variables like api key,file path 
+where you want to store the output files and OS you are running the script on
+ 	
+ ***Run : python3 configure.py***
+ 	
+Step 7 : Now you are all set! You can run the whole script or run only specific functions you are interested in
+**Run : python3 generate_backdoor_report.py -h** -> *To explore the options to run*
+
+
+You can run all functions by 
+
+**python3 generate_backdoor_report.py** Each of the functions create CSV and JSON files. 
+
+If interested in any specific functions, you can just that alone 
+Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
+Run : *python3 generate_backdoor_report.py -ena*
+
+Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
+Run : *python3 generate_backdoor_report.py -spu*
+
+Identify malicious process running with binary deleted -> Writes to binary_deleted_process.csv
+Run : *python3 generate_backdoor_report.py -bd*
+
+Identify Suspicious Chrome extensions -> Writes to suspicious_chrome_extensions.csv
+Run : *python3 generate_backdoor_report.py -ce*
+
+Identify files created/modified/deleted from USB disk -> Writes to files_written_in_USB.csv
+Run : *python3 generate_backdoor_report.py -usb*
+
+Identify top 10 processes that has large resident memory -> Writes to large_memory_resident_size_process.csv
+Run : *python3 generate_backdoor_report.py -lmem*
+
+Identify various applications running and its versions -> Writes to application_and_versions.csv
+Run : *python3 generate_backdoor_report.py -appcheck*
     
-Before running the scripts, run configure.py to configure the variables like apikey and filepath
-    python3 configure.py
+If you want to continuously run in your endpoint, you can specify the duration and freq of the run. 
+For example, if you want to run the script every 5 mins for 1 hr then, run
 
-Run the main script now.
-If you want to run all functions of backdoor one time, you can just run 
-    python3 generate_backdoor_report.py 
+*python3 generate_backdoor_report.py -duration 60 -freq 5* 
+or you can run specific functions like 
+*python3 generate_backdoor_report.py -spu -duration 60 -freq 5*
 
-To run specific functions, you can do python3 generate_backdoor_report.py -h to check options to run specific functions
-    delay : You can specify delay between the runs in seconds. This can be used in combination with other options as well.
-    freq  : Specify the time you need to run the script in minutes. For example, you can run the script every 5 mins 
-            for 1 hr by specifying the option like -delay 300 -freq 60 
-    ena   : Find processes exposed to network attack
-    spu   : Find suspicious process to unknown_ports
-    bd    : Find malicious process running with binary deleted
-    
     
 ### Finding processes that exposes TCP/UDP ports for network attacks
 
@@ -64,13 +97,7 @@ like whether it a Web proxy, VPN address or its a tor network.
 If you don't have the API key then please enter none and we list all potentially suspicious 
 processes running in your hosts/endpoint. The processes written in CSV can be tracked based on the date and time the 
 script is executed.
-
-
-How to get API VOID API Key?
-https://www.apivoid.com/api/ip-reputation/ 
-
-Click Register Now and obtain APIKey. Initially you get 25 free API credits. Please review the pricing details.
-
+ 
 Scope: I'll add support for VirusTotal lookup as well at later point.
 
 ### Finding malicious processes which is running with its binary deleted
