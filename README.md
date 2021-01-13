@@ -20,12 +20,12 @@ How to get API VOID API Key? https://www.apivoid.com/api/ip-reputation/
 Click Register Now and obtain APIKey. Initially you get 25 free API credits. Please review the pricing details.
 
  
-###### How to run the script
+## How to run the script
 
 Before running the scripts, run configure.py to configure the variables like api key,file path 
 where you want to store the output files and OS you are running the script on
  	
- ***Run : python3 configure.py***
+ **Run : python3 configure.py**
  	
 Step 7 : Now you are all set! You can run the whole script or run only specific functions you are interested in
 **Run : python3 generate_backdoor_report.py -h** -> *To explore the options to run*
@@ -37,10 +37,12 @@ You can run all functions by
 
 If interested in any specific functions, you can just that alone 
 Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
-Run : *python3 generate_backdoor_report.py -ena*
+
+Run : **python3 generate_backdoor_report.py -ena**
 
 Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
-Run : *python3 generate_backdoor_report.py -spu*
+
+Run : **python3 generate_backdoor_report.py -spu**
 
 Identify malicious process running with binary deleted -> Writes to binary_deleted_process.csv
 Run : *python3 generate_backdoor_report.py -bd*
