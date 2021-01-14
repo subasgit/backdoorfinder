@@ -169,7 +169,7 @@ if __name__ == "__main__":
     duration = 1
     delay = 0
     # Read and store the hardware vendor name
-    hw_type = read_configure_file('hardware_vendor')
+    hw_type = backdoor.check_hardware_vendor()
 
     options = get_arguments_options(sys.argv[1:])
     if options.duration:
