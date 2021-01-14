@@ -34,7 +34,7 @@ def write_to_csv_suspicious_process_to_unknown_ports():
     final_file_path = read_configure_file('file_location', value='suspicious_process_to_unknown_ports.csv')
 
     # Get the suspicious process to unknown ports
-    process_list = backdoor.suspicious_process_to_unknown_ports(api_key)
+    process_list = backdoor.suspicious_process_to_unknown_ports(hw_type,api_key)
 
     # Write it to CSV file
     backdoor.convert_to_csv(final_file_path, process_list)
@@ -48,7 +48,7 @@ def write_to_csv_suspicious_process_to_unknown_ports():
 def write_to_csv_process_running_binary_deleted():
     """ Find processes running on the endpoint whose binary has been deleted from disk"""
     # Processes that are running whose binary has been deleted from the disk
-    process_list = backdoor.processes_running_binary_deleted()
+    process_list = backdoor.processes_running_binary_deleted(hw_type)
 
     # Write it to CSV file
     final_file_path = read_configure_file('file_location', value='binary_deleted_process.csv')
@@ -93,7 +93,7 @@ def write_to_csv_find_usb_connected():
 def write_to_csv_process_largest_resident_memory():
     """Find top 10 process that occupy largest resident memory"""
     # Processes that are running with largest resident memory
-    process_list = backdoor.check_processes_large_resident_memory()
+    process_list = backdoor.check_processes_large_resident_memory(hw_type)
 
     ## Write it to CSV file
     final_file_path = read_configure_file('file_location', value='large_memory_resident_size_process.csv')
@@ -151,36 +151,36 @@ def get_arguments_options(args=sys.argv[1:]):
     """Parse arguments from command line and run specific functions"""
     parser = argparse.ArgumentParser(description="Select from the options below. All functions will be run if no\
                                                  options are given")
-    parser.add_argument('-ena', action='store_true', help='Find processes exposed to network attack')
-    parser.add_argument('-spu', action='store_true', help='Find suspicious process to unknown_ports')
-    parser.add_argument('-bd', action='store_true', help='Find malicious process running with binary deleted')
-    parser.add_argument('-ce', action='store_true', help='Find suspicious Chrome extensions')
-    parser.add_argument('-usb', action='store_true', help='Find files created/modified/deleted from USB disk')
-    parser.add_argument('-lmem', action='store_true', help='Find processes that has large resident memory')
-    parser.add_argument('-appcheck', action='store_true', help='Find applications running and its versions')
-    parser.add_argument('-delay', action='store', type=int, help='Enter the delay between the running the function')
-    parser.add_argument('-freq', action='store', type=int, help='Enter the duration of the run in minutes')
+    parser.add_argument('-ena', action='store_true', help='Identify processes exposed to network attack')
+    parser.add_argument('-spu', action='store_true', help='Identify suspicious process to unknown_ports')
+    parser.add_argument('-bd', action='store_true', help='Identify malicious process running with binary deleted')
+    parser.add_argument('-ce', action='store_true', help='Identify suspicious Chrome extensions')
+    parser.add_argument('-usb', action='store_true', help='Identify files created/modified/deleted from USB disk')
+    parser.add_argument('-lmem', action='store_true', help='Identify processes that has large resident memory')
+    parser.add_argument('-appcheck', action='store_true', help='Identify applications running and its versions')
+    parser.add_argument('-freq', action='store', type=int, help='Enter the frequency of the run in minutes')
+    parser.add_argument('-duration', action='store', type=int, help='Enter the duration of the run in minutes')
     option = parser.parse_args(args)
     return option
 
 
 if __name__ == "__main__":
     counter = 1
-    frequency = 1
+    duration = 1
     delay = 0
     # Read and store the hardware vendor name
     hw_type = read_configure_file('hardware_vendor')
 
     options = get_arguments_options(sys.argv[1:])
-    if options.freq:
-        seconds = options.freq * 60
-        if options.delay:
-            delay = options.delay * 60
+    if options.duration:
+        seconds = options.duration * 60
+        if options.freq:
+            delay = options.freq * 60
         else:
             delay = 60
-        frequency = seconds / options.delay
+        frequency = seconds / delay
 
-    while counter and frequency:
+    while counter and duration:
         if not (options.ena or options.spu or options.bd):
             write_to_csv_processes_exposed_network_attack()
             write_to_csv_suspicious_process_to_unknown_ports()
@@ -214,8 +214,8 @@ if __name__ == "__main__":
 
         if delay:
             time.sleep(options.delay)
-            if options.freq:
-                frequency = frequency - 1
+            if options.duration:
+                duration = duration - 1
         else:
             counter = counter - 1
-            frequency = frequency - 1
+            duration = duration - 1

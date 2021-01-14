@@ -43,11 +43,12 @@ def processes_exposed_network_attack(hw_type):
         process_list.append(process)
     if "Apple" in hw_type:
         final_process_list = check_network_traffic(process_list)
+        return final_process_list
     else:
         return process_list
-    return final_process_list
 
-def suspicious_process_to_unknown_ports(api_key):
+
+def suspicious_process_to_unknown_ports(hw_type,api_key):
     """ Lists processes with IP traffic to remote ports not in (80, 443) and this can potentially \
     identify suspicious outbound network activity. We can cross verify this external IP address \
     with API VOID if its connected to known malicious IP address and list only those process.\
@@ -114,11 +115,15 @@ def suspicious_process_to_unknown_ports(api_key):
                     process['is_proxy'] = process['is_webproxy'] = process['is_vpn'] = process['is_hosting'] = \
                     process['is_tor'] = "N\A"
         process_list.append(process)
-    final_process_list = check_network_traffic(process_list)
-    return final_process_list
+    if "Apple" in hw_type:
+        final_process_list = check_network_traffic(process_list)
+        return final_process_list
+    else:
+        return process_list
 
 
-def processes_running_binary_deleted():
+
+def processes_running_binary_deleted(hw_type):
     """Find processes running with binary deleted"""
     instance = osquery.SpawnInstance()
     instance.open()
@@ -144,8 +149,12 @@ def processes_running_binary_deleted():
             check_processes_disksize(entry['pid'])
         process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
-    final_process_list = check_network_traffic(process_list)
-    return final_process_list
+    if "Apple" in hw_type:
+        final_process_list = check_network_traffic(process_list)
+        return final_process_list
+    else:
+        return process_list
+
 
 
 def find_suspicious_chrome_extensions():
@@ -213,7 +222,7 @@ def find_usb_connected():
     return process_list
 
 
-def check_processes_large_resident_memory():
+def check_processes_large_resident_memory(hw_type):
     """Find Processes that has the largest resident memory"""
     instance = osquery.SpawnInstance()
     instance.open()
@@ -236,8 +245,11 @@ def check_processes_large_resident_memory():
         process['pid'] = entry['pid']
         process['resident_size'] = entry['resident_size']
         process_list.append(process)
-    final_process_list = check_network_traffic(process_list)
-    return final_process_list
+    if "Apple" in hw_type:
+        final_process_list = check_network_traffic(process_list)
+        return final_process_list
+    else:
+        return process_list
 
 
 def check_application_versions():
