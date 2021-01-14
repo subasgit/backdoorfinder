@@ -48,7 +48,7 @@ def processes_exposed_network_attack(hw_type):
         return process_list
 
 
-def suspicious_process_to_unknown_ports(hw_type,api_key):
+def suspicious_process_to_unknown_ports(hw_type, api_key):
     """ Lists processes with IP traffic to remote ports not in (80, 443) and this can potentially \
     identify suspicious outbound network activity. We can cross verify this external IP address \
     with API VOID if its connected to known malicious IP address and list only those process.\
@@ -122,7 +122,6 @@ def suspicious_process_to_unknown_ports(hw_type,api_key):
         return process_list
 
 
-
 def processes_running_binary_deleted(hw_type):
     """Find processes running with binary deleted"""
     instance = osquery.SpawnInstance()
@@ -154,7 +153,6 @@ def processes_running_binary_deleted(hw_type):
         return final_process_list
     else:
         return process_list
-
 
 
 def find_suspicious_chrome_extensions():
@@ -277,6 +275,7 @@ def check_application_versions():
             process_list.append(process)
     return process_list
 
+
 def check_processes_disksize(pid):
     """Find the disk read and write by a process"""
     instance = osquery.SpawnInstance()
@@ -362,5 +361,14 @@ def convert_to_csv(file_name, parameters):
 def convert_csv_to_json(csv_file_path):
     """Converts CSV to json file"""
     df = pandas.read_csv(csv_file_path)
-    json_file = csv_file_path.strip('.csv')+".json"
+    json_file = csv_file_path.strip('.csv') + ".json"
     df.to_json(json_file, orient='records')
+
+
+def check_hardware_vendor():
+    """Find the hardware vendor of the system"""
+    instance = osquery.SpawnInstance()
+    instance.open()
+    result = instance.client.query("SELECT hardware_vendor from system_info")
+    response = result.response
+    return response[0]['hardware_vendor']
