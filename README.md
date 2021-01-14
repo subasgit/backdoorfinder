@@ -4,7 +4,7 @@
 # Backdoorfinder
 </td></tr></table>
 
-## What is Backdoorfinder?
+### What is Backdoorfinder?
 
 Cybercriminals commonly find endpoints exposed to network attacks to install backdoors by taking advantage of vulnerable components. Once installed, detection is difficult as files tend to be highly obfuscated.Once an attacker has access to a system through a backdoor, they can potentially modify files, steal personal information, install unwanted software, and even take control of the entire computer. 
 
@@ -63,8 +63,8 @@ the details before running the tool
 ```
 python3 configure.py
 ```
-    
-### Identify processes that exposes TCP/UDP ports for network attacks
+### Why we need this?   
+#### Identify processes that exposes TCP/UDP ports for network attacks
 
 function  : processes_**e**xposed_**n**etwork_**a**ttack
 ```
@@ -81,7 +81,7 @@ attackers to learn the behaviour and potential vulnerabilities of your hosts/end
 
 These processes and ports are written in CSV file along with the time the script is executed in process_exposed_network_attack.csv
 
-### Identify processes that establishes suspicious outbound network activity
+#### Identify processes that establishes suspicious outbound network activity
 
 function  :  **s**uspicious_**p**rocess_to_**u**nknown_ports
 ```
@@ -104,7 +104,7 @@ These processes and ports are written in CSV file along with the time the script
  
 Scope: I'll add support for VirusTotal lookup as well at later point.
 
-### Identify malicious processes which is running with its binary deleted
+#### Identify malicious processes which is running with its binary deleted
 
 function : processes_running_**b**inary_**d**eleted
 ```
@@ -117,7 +117,7 @@ bytes are read/written on the disk
 
 These processes and ports are written in CSV file along with the time the script is executed in binary_deleted_process.csv
 
-### Identfify suspicious browser extensions for chrome
+#### Identfify suspicious browser extensions for chrome
 
 function : suspicious_**c**hrome_**e**xtensions
 ```
@@ -133,7 +133,7 @@ web store.
 
 These processes and ports are written in CSV file along with the time the script is executed in suspicious_chrome_extensions.csv
 
-### Identify file created/updated/deleted by connecting a external USB device
+#### Identify file created/updated/deleted by connecting a external USB device
 
 function :  find_**usb**_connected
 ```
@@ -150,7 +150,7 @@ to identify the files that's copied/updated from USB device.
 
 These processes and ports are written in CSV file along with the time the script is executed in files_written_in_USB.csv
 
-### Identify top 10 processes which has the largest resident memory
+#### Identify top 10 processes which has the largest resident memory
 
 function : check_processes_**l**arge_resident_**mem**ory
 ```
@@ -163,7 +163,7 @@ This function also checks if the process transfer bytes in the network
 
 These processes and ports are written in CSV file along with the time the script is executed in large_memory_resident_size_process.csv
 
-### Find applications versions to cross check for Vulnerability
+#### Find applications versions to cross check for Vulnerability
 
 function : **check**_**app**lication_versions
 ```
