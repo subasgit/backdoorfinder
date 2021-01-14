@@ -233,10 +233,6 @@ This function gives the flexibility to store the file at the location you intent
 configure.txt If user dont have any preference of file path, file will be stored in the directory where the script 
 is executed. 
 
-Function : check_hardware_vendor
-
-This function is to get the OS running. There are few commands which are OS specific, so its important to identify the OS
-
 ### 
 
 
