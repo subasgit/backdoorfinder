@@ -50,38 +50,15 @@ To explore the options
 ```
 python3 generate_backdoor_report.py -h
 ```
- 
-If interested in any specific functions, you can just that alone 
-Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
-
-Run : **python3 generate_backdoor_report.py -ena**
-
-Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
-
-Run : **python3 generate_backdoor_report.py -spu**
-
-Identify malicious process running with binary deleted -> Writes to binary_deleted_process.csv
-Run : *python3 generate_backdoor_report.py -bd*
-
-Identify Suspicious Chrome extensions -> Writes to suspicious_chrome_extensions.csv
-Run : *python3 generate_backdoor_report.py -ce*
-
-Identify files created/modified/deleted from USB disk -> Writes to files_written_in_USB.csv
-Run : *python3 generate_backdoor_report.py -usb*
-
-Identify top 10 processes that has large resident memory -> Writes to large_memory_resident_size_process.csv
-Run : *python3 generate_backdoor_report.py -lmem*
-
-Identify various applications running and its versions -> Writes to application_and_versions.csv
-Run : *python3 generate_backdoor_report.py -appcheck*
-    
 If you want to continuously run in your endpoint, you can specify the duration and freq of the run. 
 For example, if you want to run the script every 5 mins for 1 hr then, run
-
-*python3 generate_backdoor_report.py -duration 60 -freq 5* 
+```
+python3 generate_backdoor_report.py -duration 60 -freq 5
+```
 or you can run specific functions like 
-*python3 generate_backdoor_report.py -spu -duration 60 -freq 5*
-
+```
+python3 generate_backdoor_report.py -spu -duration 60 -freq 5
+```
     
 ### Identify processes that exposes TCP/UDP ports for network attacks
 
