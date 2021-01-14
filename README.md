@@ -40,13 +40,7 @@ Click Register Now and obtain APIKey. Initially you get 25 free API credits. Ple
  
 ### How to run the script
 
-Before running the scripts, run configure.py to configure the variables like api key,file path 
-where you want to store the output files and OS you are running the script on
- 
-```
-python3 configure.py
-```
- To run the entire script  
+To run the entire script  
 ```
 python3 generate_backdoor_report.py
 ```
@@ -63,10 +57,16 @@ or you can run specific functions like
 ```
 python3 generate_backdoor_report.py -spu -duration 60 -freq 5
 ```
+If you have api key generated from APIVOID or want to store the output file to a different location, then please run the following command and input
+the details before running the tool
+ 
+```
+python3 configure.py
+```
     
 ### Identify processes that exposes TCP/UDP ports for network attacks
 
-function  : processes_exposed_network_attack
+function  : processes_**e**xposed_**n**etwork_**a**ttack
 ```
 python3 generate_backdoor_report.py -ena
 ```
@@ -83,7 +83,7 @@ These processes and ports are written in CSV file along with the time the script
 
 ### Identify processes that establishes suspicious outbound network activity
 
-function  :  suspicious_process_to_unknown_ports
+function  :  **s**uspicious_**p**rocess_to_**u**nknown_ports
 ```
 python3 generate_backdoor_report.py -spu
 ```
@@ -106,7 +106,7 @@ Scope: I'll add support for VirusTotal lookup as well at later point.
 
 ### Identify malicious processes which is running with its binary deleted
 
-function : processes_running_binary_deleted
+function : processes_running_**b**inary_**d**eleted
 ```
 python3 generate_backdoor_report.py -bd
 ```
@@ -119,7 +119,7 @@ These processes and ports are written in CSV file along with the time the script
 
 ### Identfify suspicious browser extensions for chrome
 
-function : suspicious_chrome_extensions
+function : suspicious_**c**hrome_**e**xtensions
 ```
 python3 generate_backdoor_report.py -ce
 ```
@@ -135,7 +135,7 @@ These processes and ports are written in CSV file along with the time the script
 
 ### Identify file created/updated/deleted by connecting a external USB device
 
-function :  find_usb_connected
+function :  find_**usb**_connected
 ```
 python3 generate_backdoor_report.py -usb
 ```
@@ -152,7 +152,7 @@ These processes and ports are written in CSV file along with the time the script
 
 ### Identify top 10 processes which has the largest resident memory
 
-function : check_processes_large_resident_memory
+function : check_processes_**l**arge_resident_**mem**ory
 ```
 python3 generate_backdoor_report.py -lmem
 ```
@@ -165,9 +165,9 @@ These processes and ports are written in CSV file along with the time the script
 
 ### Find applications versions to cross check for Vulnerability
 
-function : check_application_versions
+function : **check**_**app**lication_versions
 ```
-python3 generate_backdoor_report.py -appcheck
+python3 generate_backdoor_report.py -checkapp
 ```
 This function lists all application running on the endpoint along with its version. This could be used to check if your
 application is vulnerable to any attacks
