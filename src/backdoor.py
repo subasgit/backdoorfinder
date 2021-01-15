@@ -8,6 +8,7 @@ import subprocess
 import pandas
 
 
+
 def processes_exposed_network_attack(hw_type):
     """Very often Malware listens on port to provide command and control (C&C) \
     or direct shell access for an attacker.Running this query periodically and diffing \
@@ -60,7 +61,6 @@ def suspicious_process_to_unknown_ports(hw_type, api_key):
         "select s.pid, p.name, local_address, remote_address, family, protocol, local_port, remote_port \
         from process_open_sockets s join processes p on s.pid = p.pid where remote_port not in (80, 443) \
         and remote_address != '127.0.0.1' and s.state = 'ESTABLISHED'")
-    print(result_ip)
     process_list = []
     response = result_ip.response
     # Parse today's date and time
@@ -79,12 +79,6 @@ def suspicious_process_to_unknown_ports(hw_type, api_key):
         process['remote_address'] = entry['remote_address']
         process['remote_port'] = entry['remote_port']
         process['pid'] = entry['pid']
-        print('Process {} has established connection from {} port {} to {} port {}'.format(entry['name'],
-                                                                                           entry['local_address'],
-                                                                                           entry['local_port'],
-                                                                                           entry['remote_address'],
-                                                                                           entry['remote_port']))
-
         # Check memory and CPU usage of each process
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
             check_processes_disksize(entry['pid'])
@@ -95,9 +89,7 @@ def suspicious_process_to_unknown_ports(hw_type, api_key):
             if not ipaddress.ip_address(entry['remote_address']).is_private:
                 payload = {'key': api_key, 'ip': entry['remote_address']}
                 r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
-                print(r.json)
                 if "error" not in r.json():
-                    print(r.json())
                     output = r.json()
                     process['is_private'] = 'false'
                     process['detections'] = output['data']['report']['blacklists']['detections']
@@ -138,7 +130,6 @@ def processes_running_binary_deleted(hw_type):
     response = result_process.response
     for entry in response:
         process = {}
-        print('{} is running without binary file'.format(entry['name']))
         process['date'] = d1
         process['current_time'] = current_time
         process['name'] = entry['name']
@@ -182,10 +173,8 @@ def find_suspicious_chrome_extensions():
         url = "https://chrome.google.com/webstore/detail/{}".format(entry['identifier'])
         request = requests.get(url)
         if request.status_code == 200:
-            print('Web site exists')
             process['is_website_exist'] = 'yes'
         else:
-            print('Web site does not exist')
             process['is_website_exist'] = 'no'
         process['permissions'] = entry['permissions']
         process['optional_permissions'] = entry['optional_permissions']
@@ -250,7 +239,7 @@ def check_processes_large_resident_memory(hw_type):
         return process_list
 
 
-def check_application_versions():
+def check_application_version():
     instance = osquery.SpawnInstance()
     instance.open()
     process_list = []
@@ -311,11 +300,12 @@ def check_network_traffic(process_list):
     for process in process_list:
         cmd1 = process['name'] + "." + process['pid']
         match_list = [x for x in nettop_entries if cmd1 in x]
-        first_line = match_list[0].split(',')
-        fifth_line = match_list[4].split(',')
-        process['traffic_in_bytes'] = (int(fifth_line[4]) - int(first_line[4])) / 5
-        process['traffic_out_bytes'] = (int(fifth_line[5]) - int(first_line[5])) / 5
-        export_process_list.append(process)
+        if match_list:
+            first_line = match_list[0].split(',')
+            fifth_line = match_list[4].split(',')
+            process['traffic_in_bytes'] = (int(fifth_line[4]) - int(first_line[4])) / 5
+            process['traffic_out_bytes'] = (int(fifth_line[5]) - int(first_line[5])) / 5
+            export_process_list.append(process)
     return export_process_list
 
 
@@ -360,10 +350,9 @@ def convert_to_csv(file_name, parameters):
 # test commit2
 def convert_csv_to_json(csv_file_path):
     """Converts CSV to json file"""
-    df = pandas.read_csv(csv_file_path, err,error_bad_lines=False)
-    json_file = csv_file_path.strip('.csv') + ".json"
+    df = pandas.read_csv(csv_file_path, error_bad_lines=False)
+    json_file = csv_file_path.rstrip('.csv') + ".json"
     df.to_json(json_file, orient='records')
-
 
 def check_hardware_vendor():
     """Find the hardware vendor of the system"""
