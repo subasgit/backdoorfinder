@@ -8,9 +8,7 @@
 
 Cybercriminals commonly find endpoints exposed to network attacks to install backdoors by taking advantage of vulnerable components. Once installed, detection is difficult as files tend to be highly obfuscated.Once an attacker has access to a system through a backdoor, they can potentially modify files, steal personal information, install unwanted software, and even take control of the entire computer. 
 
-Backdoorfinder is a tool that can be used to identify potential ports and processes that are vulnerable for attacks.
-
-This tool identifies
+Backdoorfinder is a tool that can be used to identify  
 1) Processes that are exposed for network attack
 2) Processes that establishes suspicious outbound network activity
 3) Suspicious chrome extensions
