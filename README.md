@@ -8,9 +8,7 @@
 
 Cybercriminals commonly find endpoints exposed to network attacks to install backdoors by taking advantage of vulnerable components. Once installed, detection is difficult as files tend to be highly obfuscated.Once an attacker has access to a system through a backdoor, they can potentially modify files, steal personal information, install unwanted software, and even take control of the entire computer. 
 
-Backdoorfinder is a tool that can be used to identify potential ports and processes that are vulnerable for attacks.
-
-This tool identifies
+Backdoorfinder is a tool that can be used to identify  
 1) Processes that are exposed for network attack
 2) Processes that establishes suspicious outbound network activity
 3) Suspicious chrome extensions
@@ -70,16 +68,11 @@ function  : processes_**e**xposed_**n**etwork_**a**ttack
 ```
 python3 generate_backdoor_report.py -ena
 ```
-Very often Malware listens on port to provide command and control (C&C) or direct shell access for an attacker.
-Running this query periodically and diffing with the last known good results will help the security team to identify 
-malicious processes running in any endpoints.
+This function identifies processes and ports that are actively listening in and transferring bytes out to the network
+Very often Malware listens on port to provide command and control (C&C) or direct shell access for an attacker. If you happen to see a process listening on port 0, it means applications requesting an operating system to find a dynamic port number range to connect. Most of the network traffic connecting to local hosts listening on port 0 are not bad, but network attackers or incorrectly programmed applications can use those ports to connect to. When your hosts respond to this message, it will help attackers to learn the behaviour and potential vulnerabilities of your laptop.
 
-If you happen to see process listening on port 0, it means applications requesting operation system to find a dynamic 
-port number range to connect. Network traffic from the internet to local hosts listening on port 0 might be generated 
-by network attackers or incorrectly programmed applications. When your hosts responds to this message, it will help 
-attackers to learn the behaviour and potential vulnerabilities of your hosts/endpoint.
-
-These processes and ports are written in CSV file along with the time the script is executed in process_exposed_network_attack.csv
+These processes and ports are written in CSV file with details on CPU, memory, traffic in and out of the hosts in  process_exposed_network_attack.csv
+ 
 
 #### Identify processes that establishes suspicious outbound network activity
 
@@ -87,22 +80,14 @@ function  :  **s**uspicious_**p**rocess_to_**u**nknown_ports
 ```
 python3 generate_backdoor_report.py -spu
 ```
-This function looks for processes with IP traffic to ports not in 80 and 443. Security teams can use this function to
-identify processes that do not fit within expected whitelisted processes that usually establishes connection to 
-unknown ports. Those processes could potentially be communicating with command and control center making your 
-hosts/endpoint vulnerable for attacks.
+This process identifies the malicious score of the  remote IP address connected and monitors CPU,memory and outbound network traffic from these processes.
 
-We can cross verify the credibility score of the external IP address that the processes establishes 
-connection with API VOID lookup.Along with the detection rate, all the details of external IP are also returned and 
-written in CSV file.This involves key information like detection rate, country, ISP hosting it and anonymity details 
-like whether it a Web proxy, VPN address or its a tor network.
+Credibility of remote addresses  can be checked for maliciousness through threat analysis engines like APIVOID. Along with credibility check, remote IPs country, ISP hosting it and anonymity details like whether it is a Web proxy, VPN address or its Tor network  can be also checked.This is an optional feature to check if a remote IP address is malicious. Details on how to get API keys from APIVOID are listed in the Download and Install section. If the api key is not provided, then more details on the remote IP address will not be available.
 
-If you don't have the API key then please enter none and we list all potentially suspicious 
-processes running in your hosts/endpoint. 
+We can also check if more CPU and Memory used by the process or more disk bytes read and written  from the process or if network traffic originated in and out the process. The more important piece here is the network traffic originated out of the process. There could be legitimate processes transferring bytes out to the network. Incase you see suspiciously more traffic that you know if not expected out of that process, then you might want to check on that process
+These output is written in CSV file along with the time the script is executed in suspicious_process_to_unknown_ports.csv
 
-These processes and ports are written in CSV file along with the time the script is executed in suspicious_process_to_unknown_ports.csv
- 
-Scope: I'll add support for VirusTotal lookup as well at later point.
+This function ignores traffic connected to port 80 and 443.This doesn't mean that traffic through those ports are always safe. Unless we have a secondary check to verify if the process is safe to connect to port 80 and 443, it will be too noisy with  browsing traffic. So for now checking if processes establishing traffic to port 80 and 443  is not  in the scope of this tool.
 
 #### Identify malicious processes which is running with its binary deleted
 
@@ -110,12 +95,11 @@ function : processes_running_**b**inary_**d**eleted
 ```
 python3 generate_backdoor_report.py -bd
 ```
+This function looks for a malicious process running with its original binary file deleted on the disk. 
 
-This function looks for malicious process running with its original binary file deleted on the disk. Frequently 
-attackers will run malicious processes like this. This also checks for memory used by this process and how much
-bytes are read/written on the disk
+Frequently, attackers will leave a malicious process running but delete the original binary on disk. This query returns any process whose original binary has been deleted, which could be an indicator of a suspicious process.This also checks for cpu, memory used by this process,how many bytes are read/written on the disk and also if there is active outbound or inbound network traffic to these processes.
 
-These processes and ports are written in CSV file along with the time the script is executed in binary_deleted_process.csv
+Output of this file is written in binary_deleted_process.csv. 
 
 #### Identfify suspicious browser extensions for chrome
 
@@ -124,12 +108,9 @@ function : suspicious_**c**hrome_**e**xtensions
 python3 generate_backdoor_report.py -ce
 ```
 
-This function looks for suspicious browser extensions that allows access to modify data copied and pasted into 
-clipboard, allows access to all URL the endpoint visited and allows to access all cookies. This extensions which
-has permissions more than its supposed to have are in high risk category. Google periodically identifies
-suspicious chrome extensions and removes it.But once installed in the endpoint, it can silently listen to all activities
-So running this function will cross check if the extensions are still legitimate and gets served in chrome
-web store.
+Browser extensions are an integral part of many users’ browsers.Few browser extensions require access to almost everything your browser sees. They can see sites visited, keystrokes, and even passwords. In addition, browser extensions come from many publishers from well known browser publishers to little-known third-party vendors. So it's hard to tell what’s a legitimately a useful extension. So not every browser extension is safe.
+This function will list all chrome extensions which have a more wide open permission list that allows access to modify data copied and pasted into clipboard, allows access to all URLs, the sites visited and allows access to all cookies. This extensions which has permissions more than its supposed to have are in high risk category.
+Extensions which are malicious could have been identified and removed from Chrome store but once it's downloaded in your laptop, it does what it intends to do. So this tool will identify and cross verify if the extensions are still legitimate.
 
 These processes and ports are written in CSV file along with the time the script is executed in suspicious_chrome_extensions.csv
 
@@ -140,15 +121,14 @@ function :  find_**usb**_connected
 python3 generate_backdoor_report.py -usb
 ```
 
-This function identifies files that are copied to or from external USB device that is plugged to the endpoint using 
-File Integrity monitor(FIM).This function is compatable only with Mac as of now and can provide a
-basic level of data loss protection.file integrity monitoring (FIM) uses inotify (Linux) and FSEvents(Mac OS X) 
-to monitor files and directories for changes. As files/directories are written, read and deleted, 
-events are created. When USB is connected to macOS, it automatically mounts to /VOLUMES directory. Any changes 
-to that directory is monitored by FIM. This actions are captured along with disk_events and mounts table
-to identify the files that's copied/updated from USB device.
+This function identifies files that are copied to or from external USB device that is plugged to the endpoint.
+This function is compatable only with Mac as of now and can provide a basic level of data loss protection.
 
-These processes and ports are written in CSV file along with the time the script is executed in files_written_in_USB.csv
+File integrity monitoring (FIM) uses inotify (Linux) and FSEvents(Mac OS X) to monitor files and directories for changes. 
+As files/directories are written, read and deleted, events are created. When USB is connected to macOS, it automatically mounts 
+to /VOLUMES directory. Any changes to that directory is monitored by FIM. So any file copied or updated from USB devices are monitored and reported.
+
+These files modified and its actions are written in files_written_in_USB.csv
 
 #### Identify top 10 processes which has the largest resident memory
 
@@ -161,7 +141,7 @@ Resident memory is the memory occupied by a process in main memory. Ideally proc
 should be cross checked with known whitelisted process to see if any malicious processes are running in your system
 This function also checks if the process transfer bytes in the network 
 
-These processes and ports are written in CSV file along with the time the script is executed in large_memory_resident_size_process.csv
+These processes along with details on CPU, memory, traffic in and out of the hosts are written in large_memory_resident_size_process.csv
 
 #### Find applications versions to cross check for Vulnerability
 
@@ -172,7 +152,7 @@ python3 generate_backdoor_report.py -checkapp
 This function lists all application running on the endpoint along with its version. This could be used to check if your
 application is vulnerable to any attacks
 
-These processes and ports are written in CSV file along with the time the script is executed in application_and_versions.csv
+These application and version output are written in application_and_versions.csv
 
 ### Writing the process output to csv file 
 

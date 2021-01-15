@@ -360,7 +360,7 @@ def convert_to_csv(file_name, parameters):
 # test commit2
 def convert_csv_to_json(csv_file_path):
     """Converts CSV to json file"""
-    df = pandas.read_csv(csv_file_path)
+    df = pandas.read_csv(csv_file_path, err,error_bad_lines=False)
     json_file = csv_file_path.strip('.csv') + ".json"
     df.to_json(json_file, orient='records')
 
