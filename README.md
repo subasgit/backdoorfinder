@@ -200,7 +200,7 @@ used only if endpoint is mac.
 
 File : Configure.py
 
-This python script needs to be run first to collect neccessary information to run your generate_backdoor_report.py. 
+This python script needs to be if you have api key that you need to input or store the files in your locations. 
 This is one time run to set your variables 
 
 Function : get_api_key
