@@ -1,0 +1,4 @@
+osquery
+requests
+pandas
+pywin32
