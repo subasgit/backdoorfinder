@@ -46,32 +46,27 @@ Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_
 Run : **python3 generate_backdoor_report.py -spu**
 
 Identify malicious process running with binary deleted -> Writes to binary_deleted_process.csv
-Run : *python3 generate_backdoor_report.py -bd*
+Run : **python3 generate_backdoor_report.py -bd**
 
 Identify Suspicious Chrome extensions -> Writes to suspicious_chrome_extensions.csv
-Run : *python3 generate_backdoor_report.py -ce*
-
-Identify files created/modified/deleted from USB disk -> Writes to files_written_in_USB.csv
-Run : *python3 generate_backdoor_report.py -usb*
+Run : **python3 generate_backdoor_report.py -ce**
 
 Identify top 10 processes that has large resident memory -> Writes to large_memory_resident_size_process.csv
-Run : *python3 generate_backdoor_report.py -lmem*
+Run : **python3 generate_backdoor_report.py -lmem**
 
 Identify various applications running and its versions -> Writes to application_and_versions.csv
-Run : *python3 generate_backdoor_report.py -appcheck*
+Run : **python3 generate_backdoor_report.py -appcheck**
     
 If you want to continuously run in your endpoint, you can specify the duration and freq of the run. 
 For example, if you want to run the script every 5 mins for 1 hr then, run
 
-*python3 generate_backdoor_report.py -duration 60 -freq 5* 
+**python3 generate_backdoor_report.py -duration 60 -freq 5** 
 or you can run specific functions like 
-*python3 generate_backdoor_report.py -spu -duration 60 -freq 5*
+**python3 generate_backdoor_report.py -spu -duration 60 -freq 5**
 
     
-### Finding processes that exposes TCP/UDP ports for network attacks
-
-function  : processes_exposed_network_attack
-
+### Identify processes exposed to network attack
+ 
 Very often Malware listens on port to provide command and control (C&C) or direct shell access for an attacker.
 Running this query periodically and diffing with the last known good results will help the security team to identify 
 malicious processes running in any endpoints.
@@ -81,9 +76,7 @@ port number range to connect. Network traffic from the internet to local hosts l
 by network attackers or incorrectly programmed applications. When your hosts responds to this message, it will help 
 attackers to learn the behaviour and potential vulnerabilities of your hosts/endpoint.
 
-These processes and ports are written in CSV file along with the time the script is executed
-
-### Finding processes that establishes suspicious outbound network activity
+### Identify suspicious process to unknown_ports
 
 function  :  suspicious_process_to_unknown_ports
 
@@ -103,7 +96,7 @@ script is executed.
  
 Scope: I'll add support for VirusTotal lookup as well at later point.
 
-### Finding malicious processes which is running with its binary deleted
+### Identify malicious process running with binary deleted
 
 function : processes_running_binary_deleted
 
@@ -113,7 +106,7 @@ bytes are read/written on the disk
 
 These processes and ports are written in CSV file along with the time the script is executed 
 
-### Finding suspicious browser extensions for chrome
+### Identify Suspicious Chrome extensions
 
 function : suspicious_chrome_extensions
 
@@ -124,27 +117,13 @@ suspicious chrome extensions and removes it.But once installed in the endpoint, 
 So running this function will cross check if the extensions are still legitimate and gets served in chrome
 web store.
 
-### Finding File creation/updating/deletion by connecting a external USB device
-
-function :  write_to_csv_find_usb_connected
-
-This function identifies files that are copied to or from external USB device that is plugged to the endpoint using 
-File Integrity monitor(FIM).This function is compatable only with Mac as of now and can provide a
-basic level of data loss protection.file integrity monitoring (FIM) uses inotify (Linux) and FSEvents(Mac OS X) 
-to monitor files and directories for changes. As files/directories are written, read and deleted, 
-events are created. When USB is connected to macOS, it automatically mounts to /VOLUMES directory. Any changes 
-to that directory is monitored by FIM. This actions are captured along with disk_events and mounts table
-to identify the files that's copied/updated from USB device.
-
-### Find processes which has the largest resident memory
-
-function : check_processes_large_resident_memory
+### Identify top 10 processes that has large resident memory
 
 Resident memory is the memory occupied by a process in main memory. Ideally processes occupying large resident memory 
 should be cross checked with known whitelisted process to see if any malicious processes are running in your system
 This function also checks if the process transfer bytes in the network 
 
-## Find applications versions to cross check for Vulnerability
+### Identify various applications running and its versions
 
 function : write_to_csv_check_application_versions()
 
