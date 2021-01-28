@@ -74,22 +74,6 @@ def write_to_csv_suspicious_chrome_extensions():
         print("Suspicious chrome extensions names are written in suspicious_chrome_extensions.csv")
 
 
-def write_to_csv_find_usb_connected():
-    """Find USB connected and files written in the USB disk"""
-    # Find if USB is connected and files are written to it
-    process_list = backdoor.find_usb_connected()
-
-    if process_list:
-        # Write it to CSV file
-        final_file_path = read_configure_file('file_location', value='files_written_in_USB.csv')
-        backdoor.convert_to_csv(final_file_path, process_list)
-        print("Files created/Modified in USB are written in files_written_in_USB.csv")
-
-        # Write the CSV file to JSON
-        backdoor.convert_csv_to_json(final_file_path)
-        print("Files created/Modified in USB are written in files_written_in_USB.json")
-
-
 def write_to_csv_process_largest_resident_memory():
     """Find top 10 process that occupy largest resident memory"""
     # Processes that are running with largest resident memory
@@ -151,7 +135,6 @@ def get_arguments_options(args=sys.argv[1:]):
     parser.add_argument('-spu', action='store_true', help='Identify suspicious process to unknown_ports')
     parser.add_argument('-bd', action='store_true', help='Identify malicious process running with binary deleted')
     parser.add_argument('-ce', action='store_true', help='Identify suspicious Chrome extensions')
-    parser.add_argument('-usb', action='store_true', help='Identify files created/modified/deleted from USB disk')
     parser.add_argument('-lmem', action='store_true', help='Identify processes that has large resident memory')
     parser.add_argument('-appcheck', action='store_true', help='Identify applications running and its versions')
     parser.add_argument('-freq', action='store', type=int, help='Enter the frequency of the run in minutes')
@@ -182,7 +165,6 @@ if __name__ == "__main__":
             write_to_csv_suspicious_process_to_unknown_ports()
             write_to_csv_process_running_binary_deleted()
             write_to_csv_suspicious_chrome_extensions()
-            write_to_csv_find_usb_connected()
             write_to_csv_process_largest_resident_memory()
             write_to_csv_check_application_versions()
 
@@ -198,9 +180,6 @@ if __name__ == "__main__":
         if options.ce:
             # Find Suspicious Chrome extensions
             write_to_csv_suspicious_chrome_extensions()
-        if options.usb:
-            # Find files written to USB disk
-            write_to_csv_find_usb_connected()
         if options.lmem:
             # Find process having large resident memory
             write_to_csv_process_largest_resident_memory()
