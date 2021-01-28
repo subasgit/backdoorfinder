@@ -182,33 +182,6 @@ def find_suspicious_chrome_extensions():
     return process_list
 
 
-def find_usb_connected():
-    """Find USB connected to the endpoint and new files created/modified/deleted"""
-    instance = osquery.SpawnInstance()
-    instance.open()
-    process_list = []
-    # Parse today's date and time
-    today = date.today()
-    d1 = today.strftime("%d/%m/%Y")
-    t = time.localtime()
-    current_time = time.strftime("%H:%M:%S", t)
-
-    result_process = instance.client.query("SELECT action, uid, SUBSTR(target_path, 18) AS path, \
-                                            SUBSTR(md5, 0, 8) AS hash, time FROM file_events WHERE sha1 <> '' \
-                                            AND target_path NOT LIKE '%DS_Store'")
-    response = result_process.response
-    for entry in response:
-        process = {}
-        process['date'] = d1
-        process['current_time'] = current_time
-        process['name'] = entry['target_path']
-        process['time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(entry['time']))
-        process['action'] = entry['action']
-        process['filepath'] = entry['path']
-        process_list.append(process)
-    return process_list
-
-
 def check_processes_large_resident_memory(hw_type):
     """Find Processes that has the largest resident memory"""
     instance = osquery.SpawnInstance()
