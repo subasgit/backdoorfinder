@@ -7,18 +7,19 @@ def get_api_key():
     result = input("Do you have Apivoid api_key?(yes/no): ")
     if result == 'yes':
         api_key = input("Enter your api_key: ")
-        if not os.path.exists("configure.txt"):
-            with open("configure.txt", 'a+') as f1:
-                f1.write("api_key = " + api_key + "\n")
-        else:
-            with open("configure.txt", 'w') as f1:
-                f1.write("api_key = " + api_key + "\n")
+        with open("configure.txt", 'w') as f1:
+            f1.write("api_key_type = apivoid" + "\n")
+            f1.write("api_key = " + api_key + "\n")
     else:
-        if not os.path.exists("configure.txt"):
-            with open("configure.txt", 'a+') as f1:
-                f1.write("api_key = none" + "\n")
-        else:
+        result = input("Do you have VirusTotal api_key?(yes/no): ")
+        if result == 'yes':
+            api_key = input("Enter your api_key: ")
             with open("configure.txt", 'w') as f1:
+                f1.write("api_key_type = vt" + "\n")
+                f1.write("api_key = " + api_key + "\n")
+        else:
+             with open("configure.txt", 'w') as f1:
+                f1.write("api_key_type = none" + "\n")
                 f1.write("api_key = none" + "\n")
 
 
