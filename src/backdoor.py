@@ -6,7 +6,7 @@ from datetime import date
 import ipaddress
 import subprocess
 import pandas
-
+import json
 
 
 def processes_exposed_network_attack(hw_type):
@@ -49,7 +49,7 @@ def processes_exposed_network_attack(hw_type):
         return process_list
 
 
-def suspicious_process_to_unknown_ports(hw_type, api_key):
+def suspicious_process_to_unknown_ports(hw_type, api_key, api_key_type):
     """ Lists processes with IP traffic to remote ports not in (80, 443) and this can potentially \
     identify suspicious outbound network activity. We can cross verify this external IP address \
     with API VOID if its connected to known malicious IP address and list only those process.\
@@ -83,35 +83,19 @@ def suspicious_process_to_unknown_ports(hw_type, api_key):
         process['memory'], process['disk_bytes_read'], process['disk_bytes_written'] = \
             check_processes_disksize(entry['pid'])
         process['cpu_usage'] = check_processes_cpu(entry['pid'])
-
-        # Check whether the remote_address is a known malicious IP address if API Key is provided
-        if api_key != 'none' and api_key != 'None':
-            if not ipaddress.ip_address(entry['remote_address']).is_private:
-                payload = {'key': api_key, 'ip': entry['remote_address']}
-                r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
-                if "error" not in r.json():
-                    output = r.json()
-                    process['is_private'] = 'false'
-                    process['detections'] = output['data']['report']['blacklists']['detections']
-                    process['detection_rate'] = output['data']['report']['blacklists']['detection_rate']
-                    process['country'] = output['data']['report']['information']['country_name']
-                    process['isp'] = output['data']['report']['information']['isp']
-                    process['is_proxy'] = output['data']['report']['anonymity']['is_proxy']
-                    process['is_webproxy'] = output['data']['report']['anonymity']['is_webproxy']
-                    process['is_vpn'] = output['data']['report']['anonymity']['is_vpn']
-                    process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
-                    process['is_tor'] = output['data']['report']['anonymity']['is_tor']
-            else:
-                process['is_private'] = 'true'
-                process['detections'] = process['detection_rate'] = process['country'] = process['isp'] = \
-                    process['is_proxy'] = process['is_webproxy'] = process['is_vpn'] = process['is_hosting'] = \
-                    process['is_tor'] = "N\A"
         process_list.append(process)
+    # Check whether the remote_address is a known malicious IP address if API Key is provided
+    if api_key != 'none' and api_key != 'None':
+        if 'apivoid' in api_key_type:
+            process_lists = check_apivoid(api_key, process_list)
+        else:
+            process_lists = check_vt(api_key, process_list)
+
     if "Apple" in hw_type:
-        final_process_list = check_network_traffic(process_list)
+        final_process_list = check_network_traffic(process_lists)
         return final_process_list
     else:
-        return process_list
+        return process_lists
 
 
 def processes_running_binary_deleted(hw_type):
@@ -236,6 +220,67 @@ def check_application_version():
             process['category'] = entry['category']
             process_list.append(process)
     return process_list
+
+
+def check_apivoid(api_key, process_list, export_process_list=None):
+    export_process_list = []
+    for process in process_list:
+         if not ipaddress.ip_address(process['remote_address']).is_private:
+            payload = {'key': api_key, 'ip': process['remote_address']}
+            r = requests.get(url='https://endpoint.apivoid.com/iprep/v1/pay-as-you-go/', params=payload)
+            if "error" not in r.json():
+                output = r.json()
+                process['is_private'] = 'false'
+                process['detections'] = output['data']['report']['blacklists']['detections']
+                process['detection_rate'] = output['data']['report']['blacklists']['detection_rate']
+                process['country'] = output['data']['report']['information']['country_name']
+                process['isp'] = output['data']['report']['information']['isp']
+                process['is_proxy'] = output['data']['report']['anonymity']['is_proxy']
+                process['is_webproxy'] = output['data']['report']['anonymity']['is_webproxy']
+                process['is_vpn'] = output['data']['report']['anonymity']['is_vpn']
+                process['is_hosting'] = output['data']['report']['anonymity']['is_hosting']
+                process['is_tor'] = output['data']['report']['anonymity']['is_tor']
+                export_process_list.append(process)
+            else:
+                process['is_private'] = 'false'
+                process['detections'] = process['detection_rate'] = process['country'] = process['isp'] = \
+                    process['is_proxy'] = process['is_webproxy'] = process['is_vpn'] = process['is_hosting'] = \
+                    process['is_tor'] = 'License Error'
+                export_process_list.append(process)
+         else:
+            process['is_private'] = 'true'
+            process['detections'] = process['detection_rate'] = process['country'] = process['isp'] = \
+                process['is_proxy'] = process['is_webproxy'] = process['is_vpn'] = process['is_hosting'] = \
+                process['is_tor'] = 'N/A'
+            export_process_list.append(process)
+    return export_process_list
+
+def check_vt(apikey, process_list, export_process_list=None):
+    print(apikey)
+    headers = {"Accept-Encoding": "gzip, deflate","User-Agent": "gzip,  My Python requests"}
+    headers["X-Apikey"] = apikey.strip()
+    export_process_list = []
+    for process in process_list:
+        if not ipaddress.ip_address(process['remote_address']).is_private:
+            url = ('https://www.virustotal.com/api/v3/ip_addresses/%s' % process['remote_address'])
+            response_dict = {}
+            try:
+                response_dict = requests.get(url, headers=headers).json()
+                json_object = json.dumps(response_dict, indent=4)
+                if 'last_analysis_results' in json_object:
+                    process['detections'] = response_dict['data']['attributes']['last_analysis_stats']['malicious']
+                    process['country'] = response_dict['data']['attributes']['country']
+                else:
+                    process['detections'] = 'License Quota exceeded'
+                    process['country'] = 'License Quota exceeded'
+            except Exception as e:
+                process['detections'] = 'N/A'
+                process['country'] = 'N/A'
+        else:
+            process['detections'] = 'N/A'
+            process['country'] = 'N/A'
+        export_process_list.append(process)
+    return export_process_list
 
 
 def check_processes_disksize(pid):
