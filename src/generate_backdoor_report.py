@@ -30,12 +30,12 @@ def write_to_csv_suspicious_process_to_unknown_ports():
     You can skip that check if you don't want to cross check the maliciousness of the IP by typing none """
     # Create a new API key in API VOID and enter it here. If you don't want to check, enter none
 
-    # Get the apikey value and file location from configure.txt
-    api_key = read_configure_file('api_key')
+    # Get the apikey type and value and file location from configure.txt
+    api_key,api_key_type = read_configure_file('api_key')
     final_file_path = read_configure_file('file_location', value='suspicious_process_to_unknown_ports.csv')
 
     # Get the suspicious process to unknown ports
-    process_list = backdoor.suspicious_process_to_unknown_ports(hw_type, api_key)
+    process_list = backdoor.suspicious_process_to_unknown_ports(hw_type, api_key, api_key_type)
 
     if process_list:
         # Write it to CSV file
@@ -72,6 +72,10 @@ def write_to_csv_suspicious_chrome_extensions():
         final_file_path = read_configure_file('file_location', value='suspicious_chrome_extensions.csv')
         backdoor.convert_to_csv(final_file_path, process_list)
         print("Suspicious chrome extensions names are written in suspicious_chrome_extensions.csv")
+
+        # Write the CSV file to Json
+        backdoor.convert_csv_to_json(final_file_path)
+        print("Suspicious chrome extensions names are written in suspicious_chrome_extensions.json")
 
 
 def write_to_csv_process_largest_resident_memory():
@@ -120,12 +124,11 @@ def read_configure_file(parameter, value=''):
     if parameter == 'api_key':
         with open("configure.txt", 'r') as f1:
             for line in f1:
+                if "api_key_type" in line:
+                    type = line.split("=", 1)[1]
                 if "api_key" in line:
                     value = line.split("=", 1)[1]
-                    break
-                else:
-                    value = "none"
-        return value
+            return value, type
 
 def get_arguments_options(args=sys.argv[1:]):
     """Parse arguments from command line and run specific functions"""
