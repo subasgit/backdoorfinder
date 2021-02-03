@@ -15,10 +15,13 @@ Git clone https://github.com/subasgit/backdoorfinder.git
 Step 4: Run requirements.txt file to install the dependencies pip3 install -r requirements.txt
         If windows run, pip3 install -r requirements_for_windows.txt
 
-Step 5:(Optional)Some functions have options to check Threat intelligence for the maliciousness of the remote IP address. I integrated with APIVOID to perform that lookup. If you prefer not to use that, then you don't need to do this step
+Step 5:(Optional)Some functions have options to check Threat intelligence for the maliciousness of the remote IP address. 
+I integrated with APIVOID and Virustotal to perform that lookup. If you prefer not to use that, then you don't need to do this step
 
 How to get API VOID API Key? https://www.apivoid.com/api/ip-reputation/
 Click Register Now and obtain APIKey. Initially you get 25 free API credits. Please review the pricing details.
+
+How to get VirusTotal Key? https://www.virustotal.com/gui/join-us
 
  
 ## How to run the script
@@ -86,7 +89,7 @@ unknown ports. Those processes could potentially be communicating with command a
 hosts/endpoint vulnerable for attacks.
 
 We can cross verify the credibility score of the external IP address that the processes establishes 
-connection with API VOID lookup.Along with the detection rate, all the details of external IP are also returned and 
+connection with apivoid/virustotal lookup.Along with the detection rate, all the details of external IP are also returned and 
 written in CSV file.This involves key information like detection rate, country, ISP hosting it and anonymity details 
 like whether it a Web proxy, VPN address or its a tor network.
 
@@ -94,7 +97,6 @@ If you don't have the API key then please enter none and we list all potentially
 processes running in your hosts/endpoint. The processes written in CSV can be tracked based on the date and time the 
 script is executed.
  
-Scope: I'll add support for VirusTotal lookup as well at later point.
 
 ### Identify malicious process running with binary deleted
 
