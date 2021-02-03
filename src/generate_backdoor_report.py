@@ -150,6 +150,7 @@ if __name__ == "__main__":
     counter = 1
     duration = 1
     delay = 0
+    frequency = 0
     # Read and store the hardware vendor name
     hw_type = backdoor.check_hardware_vendor()
 
@@ -190,10 +191,10 @@ if __name__ == "__main__":
             # Find applications and its versions
             write_to_csv_check_application_versions()
 
-        if delay:
-            time.sleep(options.delay)
+        if frequency > 0:
+            time.sleep(delay)
             if options.duration:
-                duration = duration - 1
+                frequency = frequency - 1
         else:
             counter = counter - 1
             duration = duration - 1
