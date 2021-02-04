@@ -191,6 +191,7 @@ if __name__ == "__main__":
             # Find applications and its versions
             write_to_csv_check_application_versions()
 
+        # Check to run the program to run for set number of times and duration
         if frequency > 0:
             time.sleep(delay)
             if options.duration:

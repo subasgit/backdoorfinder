@@ -22,7 +22,7 @@ How to get API VOID API Key? https://www.apivoid.com/api/ip-reputation/
 Click Register Now and obtain APIKey. Initially you get 25 free API credits. Please review the pricing details.
 
 How to get VirusTotal Key? https://www.virustotal.com/gui/join-us
-
+Please read the restrictions of public api key and use it likewise
  
 ## How to run the script
 
@@ -70,14 +70,18 @@ or you can run specific functions like
     
 ### Identify processes exposed to network attack
  
-Very often Malware listens on port to provide command and control (C&C) or direct shell access for an attacker.
-Running this query periodically and diffing with the last known good results will help the security team to identify 
-malicious processes running in any endpoints.
+This function identifies processes and ports that are actively listening in, its CPU, memory and whether its 
+transferring bytes out in the network	
+Very often Malware listens on port to provide command and control (C&C) or direct shell access for an attacker. 
+This function will give us a fair idea on what processes in our laptops are actively listening in. Some applications
+like Google chrome are expected to be connected to the servers that host the websites you're browsing right now. 
+By just finding this process alone we can't be sure that this has any potential malicious intent. 
+So I added additional checks to identify active network bytes in and out of the laptop or if any processes have high
+CPU or memory utilization. This can potentially spot applications/processes that are not intended to transfer bytes
+or having high cpu or memory usage.
 
-If you happen to see process listening on port 0, it means applications requesting operation system to find a dynamic 
-port number range to connect. Network traffic from the internet to local hosts listening on port 0 might be generated 
-by network attackers or incorrectly programmed applications. When your hosts responds to this message, it will help 
-attackers to learn the behaviour and potential vulnerabilities of your hosts/endpoint.
+The output of this function is written in a CSV format with details on CPU, memory, traffic in and out of the hosts. 
+
 
 ### Identify suspicious process to unknown_ports
 
