@@ -223,6 +223,7 @@ def check_application_version():
 
 
 def check_apivoid(api_key, process_list, export_process_list=None):
+    # Check to find the detection rate of remote IP address in apivoid
     export_process_list = []
     for process in process_list:
          if not ipaddress.ip_address(process['remote_address']).is_private:
