@@ -379,4 +379,5 @@ def check_hardware_vendor():
     instance.open()
     result = instance.client.query("SELECT hardware_vendor from system_info")
     response = result.response
+    print(response)
     return response[0]['hardware_vendor']
