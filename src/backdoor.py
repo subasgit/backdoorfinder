@@ -366,7 +366,7 @@ def convert_to_csv(file_name, parameters):
                 write_obj.write("," + str(value))
             write_obj.write("\n")
 
-# test commit2
+
 def convert_csv_to_json(csv_file_path):
     """Converts CSV to json file"""
     df = pandas.read_csv(csv_file_path, error_bad_lines=False)
@@ -379,5 +379,4 @@ def check_hardware_vendor():
     instance.open()
     result = instance.client.query("SELECT hardware_vendor from system_info")
     response = result.response
-    print(response)
     return response[0]['hardware_vendor']
