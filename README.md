@@ -33,7 +33,8 @@ where you want to store the output files and OS you are running the script on
  	
 Step 7 : Now you are all set! You can run the whole script or run only specific functions you are interested in
 
-*To explore the options to run* ```python3 generate_backdoor_report.py -h``` -> 
+To explore the options to run
+```python3 generate_backdoor_report.py -h```
 
 
 You can run all functions by 
@@ -42,33 +43,40 @@ You can run all functions by
 
 Each of the functions create CSV and JSON files. 
 
-If interested in any specific functions, you can just that alone 
+If interested in any specific functions, you can run that function alone 
+
 Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
 
 `python3 generate_backdoor_report.py -ena`
 
 Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
 
-Run : **python3 generate_backdoor_report.py -spu**
+`python3 generate_backdoor_report.py -spu`
 
 Identify malicious process running with binary deleted -> Writes to binary_deleted_process.csv
-Run : **python3 generate_backdoor_report.py -bd**
+
+`python3 generate_backdoor_report.py -bd`
 
 Identify Suspicious Chrome extensions -> Writes to suspicious_chrome_extensions.csv
-Run : **python3 generate_backdoor_report.py -ce**
+
+`python3 generate_backdoor_report.py -ce`
 
 Identify top 10 processes that has large resident memory -> Writes to large_memory_resident_size_process.csv
-Run : **python3 generate_backdoor_report.py -lmem**
+
+`python3 generate_backdoor_report.py -lmem`
 
 Identify various applications running and its versions -> Writes to application_and_versions.csv
-Run : **python3 generate_backdoor_report.py -appcheck**
+
+`python3 generate_backdoor_report.py -appcheck`
     
 If you want to continuously run in your endpoint, you can specify the duration and freq of the run. 
 For example, if you want to run the script every 5 mins for 1 hr then, run
 
-**python3 generate_backdoor_report.py -duration 60 -freq 5** 
+`python3 generate_backdoor_report.py -duration 60 -freq 5`
+
 or you can run specific functions like 
-**python3 generate_backdoor_report.py -spu -duration 60 -freq 5**
+
+`python3 generate_backdoor_report.py -spu -duration 60 -freq 5`
 
     
 ### Identify processes exposed to network attack
