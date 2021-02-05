@@ -29,20 +29,23 @@ Please read the restrictions of public api key and use it likewise
 Before running the scripts, run configure.py to configure the variables like api key,file path 
 where you want to store the output files and OS you are running the script on
  	
- **Run : python3 configure.py**
+```python3 configure.py```
  	
 Step 7 : Now you are all set! You can run the whole script or run only specific functions you are interested in
-**Run : python3 generate_backdoor_report.py -h** -> *To explore the options to run*
+
+*To explore the options to run* ```python3 generate_backdoor_report.py -h``` -> 
 
 
 You can run all functions by 
 
-**python3 generate_backdoor_report.py** Each of the functions create CSV and JSON files. 
+```python3 generate_backdoor_report.py``` 
+
+Each of the functions create CSV and JSON files. 
 
 If interested in any specific functions, you can just that alone 
 Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
 
-Run : **``python3 generate_backdoor_report.py -ena`**
+`python3 generate_backdoor_report.py -ena`
 
 Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
 
