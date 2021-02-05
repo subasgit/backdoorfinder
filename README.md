@@ -42,7 +42,7 @@ You can run all functions by
 If interested in any specific functions, you can just that alone 
 Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
 
-Run : **python3 generate_backdoor_report.py -ena**
+`Run : **python3 generate_backdoor_report.py -ena**`
 
 Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
 
