@@ -87,19 +87,29 @@ The output of this function is written in a CSV format with details on CPU, memo
 
 function  :  suspicious_process_to_unknown_ports
 
+This function identifies whether the remotely connected address of the processes is malicious.  If it's malicious, it 
+can make your hosts/endpoints vulnerable for attacks. Additional checks on CPU, memory and network bytes transferred 
+from this process also provides secondary validation
+
 This function looks for processes with IP traffic to ports not in 80 and 443. Security teams can use this function to
 identify processes that do not fit within expected whitelisted processes that usually establishes connection to 
 unknown ports. Those processes could potentially be communicating with command and control center making your 
 hosts/endpoint vulnerable for attacks.
 
-We can cross verify the credibility score of the external IP address that the processes establishes 
-connection with apivoid/virustotal lookup.Along with the detection rate, all the details of external IP are also returned and 
-written in CSV file.This involves key information like detection rate, country, ISP hosting it and anonymity details 
-like whether it a Web proxy, VPN address or its a tor network.
+Credibility of remote addresses can be checked by integration with threat intelligence api like APIVoid and VirusTotal. 
+Along with credibility check, remote IPs country, ISP hosting it and anonymity details like whether it is a Web proxy, 
+VPN address or its Tor network can be also checked. We need to register and get API keys to check if the connected 
+remote IP address is malicious or not. Details on how to get API keys from APIVoid are listed in the 
+Download and Install section. This is an optional feature, so if the api key is not provided, then more insights into
+remote IP addresses will not be available.
 
-If you don't have the API key then please enter none and we list all potentially suspicious 
-processes running in your hosts/endpoint. The processes written in CSV can be tracked based on the date and time the 
-script is executed.
+We can also check the CPU,Memory, disk bytes read and written  from the process and also network traffic originated 
+in and out the process. Apart from malicious checks of remote IP addresses , the other important piece here is the 
+network traffic originated out of the process. There could be legitimate processes transferring bytes out to the 
+network. In case you see suspiciously more traffic that is not expected out of a process or a connection, then you 
+might want to check on that process.
+
+This output is written in CSV format along with the time the script is executed
  
 
 ### Identify malicious process running with binary deleted
