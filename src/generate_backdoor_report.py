@@ -140,7 +140,7 @@ def get_arguments_options(args=sys.argv[1:]):
     parser.add_argument('-ce', action='store_true', help='Identify suspicious Chrome extensions')
     parser.add_argument('-lmem', action='store_true', help='Identify processes that has large resident memory')
     parser.add_argument('-appcheck', action='store_true', help='Identify applications running and its versions')
-    parser.add_argument('-freq', action='store', type=int, help='Enter the frequency of the run in minutes')
+    parser.add_argument('-freq', action='store', type=int, help='Enter how frequent you want to run in minutes')
     parser.add_argument('-duration', action='store', type=int, help='Enter the duration of the run in minutes')
     option = parser.parse_args(args)
     return option
