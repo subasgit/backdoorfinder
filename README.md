@@ -42,7 +42,7 @@ You can run all functions by
 If interested in any specific functions, you can just that alone 
 Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
 
-Run : **python3 generate_backdoor_report.py -ena**
+`Run : **python3 generate_backdoor_report.py -ena**`
 
 Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
 
@@ -126,12 +126,25 @@ These processes and ports are written in CSV file along with the time the script
 
 function : suspicious_chrome_extensions
 
-This function looks for suspicious browser extensions that allows access to modify data copied and pasted into 
-clipboard, allows access to all URL the endpoint visited and allows to access all cookies. This extensions which
-has permissions more than its supposed to have are in high risk category. Google periodically identifies
-suspicious chrome extensions and removes it.But once installed in the endpoint, it can silently listen to all activities
-So running this function will cross check if the extensions are still legitimate and gets served in chrome
-web store.
+This command will list all chrome extensions which have a more wide open permission list that allows access to, 
+modify data copied and pasted into clipboard,
+all URLs visited
+all cookies. 
+These extensions which have more permissions than it is supposed to have are in a high risk category.
+Browser extensions are an integral part of many users’ browsers. Few browser extensions require access to almost 
+everything your browser sees. They can see sites visited, keystrokes, and even passwords. In addition, browser 
+extensions come from many publishers from well known browser publishers to little-known third-party vendors. So it's 
+hard to tell what’s a legitimately useful extension.
+
+Oftentimes the extensions that are identified as malicious is removed from the Chrome store.  But once downloaded, 
+the end user has no automatic way to know that the extensions are blacklisted and it's not available in the Chrome 
+store anymore. So this tool will identify extensions that have wide open permissions and cross verify if the 
+extensions are still legitimate.
+
+Lot of times, we might not know that these extensions are installed in our laptop. This check could help you identify 
+it and you can remove it if it’s not needed. You can run this often and add extensions that's not harmful in allow lists
+
+These processes and ports are written in CSV file along with the time the script is executed 
 
 ### Identify top 10 processes that has large resident memory
 
