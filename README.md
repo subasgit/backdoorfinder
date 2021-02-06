@@ -1,5 +1,8 @@
 # Backdoorfinder
 
+![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fsubasgit%2Fbackdoorfinder)
+
+
 ## Getting Started
 This is a tool to find potential backdoor/security holes in your endpoint(laptop/desktop/server). These instructions will help you install and run in your local system. This is primarily tested on macOS but supported on Ubuntu and Windows too.
 
