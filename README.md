@@ -1,5 +1,10 @@
 # Backdoorfinder
-## Tool to find potential backdoor/security holes in your endpoint
+
+![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fsubasgit%2Fbackdoorfinder)
+
+
+## Getting Started
+This is a tool to find potential backdoor/security holes in your endpoint(laptop/desktop/server). These instructions will help you install and run in your local system. This is primarily tested on macOS but supported on Ubuntu and Windows too.
 
 ### Prerequisites:
 
@@ -24,59 +29,80 @@ Click Register Now and obtain APIKey. Initially you get 25 free API credits. Ple
 How to get VirusTotal Key? https://www.virustotal.com/gui/join-us
 Please read the restrictions of public api key and use it likewise
  
-## How to run the script
+## Installation
 
 Before running the scripts, run configure.py to configure the variables like api key,file path 
 where you want to store the output files and OS you are running the script on
  	
-```python3 configure.py```
- 	
-Step 7 : Now you are all set! You can run the whole script or run only specific functions you are interested in
+```
+python3 configure.py
+```
+
+## Usage 
+Now you are all set! You can run the whole script or run only specific functions you are interested in
 
 To explore the options to run
-```python3 generate_backdoor_report.py -h```
-
-
+```
+python3 generate_backdoor_report.py -h
+```
 You can run all functions by 
 
-```python3 generate_backdoor_report.py``` 
+```
+python3 generate_backdoor_report.py
+``` 
 
-Each of the functions create CSV and JSON files. 
+Each of the functions will create CSV and JSON files. 
 
 If interested in any specific functions, you can run that function alone 
 
 Identify processes exposed to network attack -> Writes to process_exposed_network_attack.csv
 
-`python3 generate_backdoor_report.py -ena`
+```
+python3 generate_backdoor_report.py -ena
+```
 
 Identify suspicious process to unknown_ports -> Writes to suspicious_process_to_unknown_ports.csv
 
-`python3 generate_backdoor_report.py -spu`
+```
+python3 generate_backdoor_report.py -spu
+```
 
 Identify malicious process running with binary deleted -> Writes to binary_deleted_process.csv
 
-`python3 generate_backdoor_report.py -bd`
+```
+python3 generate_backdoor_report.py -bd
+```
 
 Identify Suspicious Chrome extensions -> Writes to suspicious_chrome_extensions.csv
 
-`python3 generate_backdoor_report.py -ce`
+```
+python3 generate_backdoor_report.py -ce
+```
 
 Identify top 10 processes that has large resident memory -> Writes to large_memory_resident_size_process.csv
 
-`python3 generate_backdoor_report.py -lmem`
+```
+python3 generate_backdoor_report.py -lmem
+```
 
 Identify various applications running and its versions -> Writes to application_and_versions.csv
 
-`python3 generate_backdoor_report.py -appcheck`
+```
+python3 generate_backdoor_report.py -appcheck
+```
     
 If you want to continuously run in your endpoint, you can specify the duration and freq of the run. 
 For example, if you want to run the script every 5 mins for 1 hr then, run
 
-`python3 generate_backdoor_report.py -duration 60 -freq 5`
+```
+python3 generate_backdoor_report.py -duration 60 -freq 5
+```
 
 or you can run specific functions like 
 
-`python3 generate_backdoor_report.py -spu -duration 60 -freq 5`
+```
+python3 generate_backdoor_report.py -spu -duration 60 -freq 5
+```
 
     
 ### Identify processes exposed to network attack
