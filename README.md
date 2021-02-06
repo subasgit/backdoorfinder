@@ -96,8 +96,6 @@ The output of this function is written in a CSV format with details on CPU, memo
 
 ### Identify suspicious process to unknown_ports
 
-function  :  suspicious_process_to_unknown_ports
-
 This function identifies whether the remotely connected address of the processes is malicious.  If it's malicious, it 
 can make your hosts/endpoints vulnerable for attacks. Additional checks on CPU, memory and network bytes transferred 
 from this process also provides secondary validation
@@ -125,17 +123,13 @@ This output is written in CSV format along with the time the script is executed
 
 ### Identify malicious process running with binary deleted
 
-function : processes_running_binary_deleted
-
-This function looks for malicious process running with its original binary file deleted on the disk. Frequently 
+ This function looks for malicious process running with its original binary file deleted on the disk. Frequently 
 attackers will run malicious processes like this. This also checks for memory used by this process and how much
 bytes are read/written on the disk
 
 These processes and ports are written in CSV file along with the time the script is executed 
 
 ### Identify Suspicious Chrome extensions
-
-function : suspicious_chrome_extensions
 
 This command will list all chrome extensions which have a more wide open permission list that allows access to, 
 modify data copied and pasted into clipboard,
@@ -164,8 +158,6 @@ should be cross checked with known whitelisted process to see if any malicious p
 This function also checks if the process transfer bytes in the network 
 
 ### Identify various applications running and its versions
-
-function : write_to_csv_check_application_versions()
 
 This function lists all application running on the endpoint along with its version. This could be used to check if your
 application is vulnerable to any attacks
