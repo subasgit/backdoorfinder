@@ -328,6 +328,7 @@ def check_network_traffic(process_list):
     return export_process_list
 
 def write_suspicious_process_to_csv(file_name, parameters):
+    # Procedure to write only suspicious process to seperate csv file
     if not bool(parameters):
         return 0
     if not os.path.exists(file_name):
