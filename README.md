@@ -188,7 +188,13 @@ This function also checks if the process transfer bytes in the network
 This function lists all application running on the endpoint along with its version. This could be used to check if your
 application is vulnerable to any attacks
 
-### Writing the process output to csv file 
+### Writing only suspicious process in a CSV file
+function : write_suspicious_process_to_csv
+
+This function will create a separate CSV file and write all suspicious process which is sending traffic out of the 
+box. This is a subset to look among processes which doesnt send traffic out of the box
+
+### Writing the process output to CSV file 
 
 function: convert_to_csv
 
