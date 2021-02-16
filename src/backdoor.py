@@ -327,6 +327,32 @@ def check_network_traffic(process_list):
             export_process_list.append(process)
     return export_process_list
 
+def write_suspicious_process_to_csv(file_name, parameters):
+    if not bool(parameters):
+        return 0
+    if not os.path.exists(file_name):
+        with open(file_name, 'a+', newline='') as write_obj:
+            write_obj.write('date')
+            write_obj.write(',current_time')
+            write_obj.write(',name')
+            write_obj.write(',pid')
+            write_obj.write(',traffic_out_bytes')
+            write_obj.write("\n")
+    else:
+        with open(file_name, 'a+', newline='') as write_obj:
+        # Adding entries
+            for process in parameters:
+                try:
+                    if int(process['traffic_out_bytes']) > 0:
+                        write_obj.write(str(process['date'] + ','))
+                        write_obj.write(str(process['current_time'] + ','))
+                        write_obj.write(str(process['name'] + ','))
+                        write_obj.write(str(process['pid'] + ','))
+                        write_obj.write(str(process['traffic_out_bytes']))
+                        write_obj.write("\n")
+                except Exception as e:
+                    print(e)
+
 
 def convert_to_csv(file_name, parameters):
     """Writes the parameters parsed to CSV file """
