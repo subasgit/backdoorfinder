@@ -9,6 +9,7 @@ def write_to_csv_processes_exposed_network_attack():
 
     # Get the apikey value and file location from configure.txt
     final_file_path = read_configure_file('file_location', value='process_exposed_network_attack.csv')
+    suspicious_process_file_path = read_configure_file('file_location', value='process_transferring_bytes.csv')
 
     # Get the processes exposed to network attacks
     process_list = backdoor.processes_exposed_network_attack(hw_type)
@@ -17,6 +18,10 @@ def write_to_csv_processes_exposed_network_attack():
         # Write it to CSV file
         backdoor.convert_to_csv(final_file_path, process_list)
         print("Processes exposed to network attacks are written in process_exposed_network_attack.csv")
+
+        # Write only suspicious process to CSV file
+        backdoor.write_process_transfer_bytes_to_csv(suspicious_process_file_path, process_list)
+        print("Processes transferring bytes are written in process_transferring_bytes.csv")
 
         # Write the CSV file to Json
         backdoor.convert_csv_to_json(final_file_path)
@@ -33,6 +38,7 @@ def write_to_csv_suspicious_process_to_unknown_ports():
     # Get the apikey type and value and file location from configure.txt
     api_key,api_key_type = read_configure_file('api_key')
     final_file_path = read_configure_file('file_location', value='suspicious_process_to_unknown_ports.csv')
+    suspicious_process_file_path = read_configure_file('file_location', value='process_transferring_bytes.csv')
 
     # Get the suspicious process to unknown ports
     process_list = backdoor.suspicious_process_to_unknown_ports(hw_type, api_key, api_key_type)
@@ -41,6 +47,10 @@ def write_to_csv_suspicious_process_to_unknown_ports():
         # Write it to CSV file
         backdoor.convert_to_csv(final_file_path, process_list)
         print("Suspicious process connecting to unknown ports are written in suspicious_process_to_unknown_ports.csv ")
+
+        # Write only suspicious process to CSV file
+        backdoor.write_process_transfer_bytes_to_csv(suspicious_process_file_path, process_list)
+        print("Processes transferring bytes are written in process_transferring_bytes.csv")
 
         # Write the CSV file to Json
         backdoor.convert_csv_to_json(final_file_path)

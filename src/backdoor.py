@@ -327,8 +327,7 @@ def check_network_traffic(process_list):
             export_process_list.append(process)
     return export_process_list
 
-def write_suspicious_process_to_csv(file_name, parameters):
-    # Procedure to write only suspicious process to seperate csv file
+def write_process_transfer_bytes_to_csv(file_name, parameters):
     if not bool(parameters):
         return 0
     if not os.path.exists(file_name):
@@ -339,20 +338,19 @@ def write_suspicious_process_to_csv(file_name, parameters):
             write_obj.write(',pid')
             write_obj.write(',traffic_out_bytes')
             write_obj.write("\n")
-    else:
-        with open(file_name, 'a+', newline='') as write_obj:
+    with open(file_name, 'a+', newline='') as write_obj:
         # Adding entries
-            for process in parameters:
-                try:
-                    if int(process['traffic_out_bytes']) > 0:
-                        write_obj.write(str(process['date'] + ','))
-                        write_obj.write(str(process['current_time'] + ','))
-                        write_obj.write(str(process['name'] + ','))
-                        write_obj.write(str(process['pid'] + ','))
-                        write_obj.write(str(process['traffic_out_bytes']))
-                        write_obj.write("\n")
-                except Exception as e:
-                    print(e)
+        for process in parameters:
+            try:
+                if int(process['traffic_out_bytes']) > 0:
+                    write_obj.write(str(process['date'] + ','))
+                    write_obj.write(str(process['current_time'] + ','))
+                    write_obj.write(str(process['name'] + ','))
+                    write_obj.write(str(process['pid'] + ','))
+                    write_obj.write(str(process['traffic_out_bytes']))
+                    write_obj.write("\n")
+            except Exception:
+                pass
 
 
 def convert_to_csv(file_name, parameters):
