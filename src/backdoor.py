@@ -353,7 +353,7 @@ def write_process_transfer_bytes_to_csv(file_name, parameters):
                 pass
 
 
-def write_malicious_remote_ip_to_csv(file_name, parameters):
+def write_suspicious_remote_ip_to_csv(file_name, parameters):
     # This function will write if any of your process is connected to remote\
     # malicious IP address
     if not bool(parameters):
