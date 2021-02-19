@@ -188,7 +188,7 @@ if __name__ == "__main__":
             delay = options.freq * 60
         else:
             delay = 60
-        frequency = seconds / delay
+        frequency = round(seconds / delay)
 
     while counter and duration:
         if not (options.ena or options.spu or options.bd or options.ce or options.appcheck or options.lmem):

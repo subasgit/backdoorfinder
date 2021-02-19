@@ -192,14 +192,14 @@ application is vulnerable to any attacks
 function : write_process_transfer_bytes_to_csv -> process_transferring_bytes.csv
 
 This function will create a separate CSV file and write all process which is sending traffic out of the 
-box. There will be expected and known good processes which will genuinely send traffic out among some unknown processes.
-But this subset will give a good idea on processes which have frequent outbound traffic flow
+box. It will be empty if no such processes are found.There will be expected and known good processes which will genuinely send traffic out among some unknown processes.
+But this subset will give a good idea on processes which have frequent outbound traffic flows.
 
 ### Writing processes which is connecting to remote suspicious IP address to a CSV file
 function : write_malicious_remote_ip_to_csv -> process_connecting_to_suspicious_ip.csv
 
 This function will create a separate CSV file when a process establishes connection to remote suspicious IP address.
-This processes needs to be investigated and blocked
+This processes needs to be investigated and blocked.This csv file will be empty if no such processes are found
 
 
 ### Writing the process output to CSV file 
