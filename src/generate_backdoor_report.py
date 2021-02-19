@@ -29,16 +29,16 @@ def write_to_csv_processes_exposed_network_attack():
 
 
 def write_to_csv_suspicious_process_to_unknown_ports():
-    """ Find suspicious processes from your hosts connecting to unknown ports. If you want to verify \
-    if the connected external IP address is malicious, then you can create an account in \
-    API VOID and provide the API key to cross verify if the IP address is really malicious.\
-    You can skip that check if you don't want to cross check the maliciousness of the IP by typing none """
-    # Create a new API key in API VOID and enter it here. If you don't want to check, enter none
+    """ Find suspicious processes from your hosts connecting to unknown ports"""
 
     # Get the apikey type and value and file location from configure.txt
     api_key,api_key_type = read_configure_file('api_key')
+
+    # Set file path
     final_file_path = read_configure_file('file_location', value='suspicious_process_to_unknown_ports.csv')
     suspicious_process_file_path = read_configure_file('file_location', value='process_transferring_bytes.csv')
+    suspicious_remote_ip_file_path = read_configure_file('file_location', \
+                                                         value='process_connecting_to_suspicious_ip.csv')
 
     # Get the suspicious process to unknown ports
     process_list = backdoor.suspicious_process_to_unknown_ports(hw_type, api_key, api_key_type)
@@ -51,6 +51,8 @@ def write_to_csv_suspicious_process_to_unknown_ports():
         # Write only suspicious process to CSV file
         backdoor.write_process_transfer_bytes_to_csv(suspicious_process_file_path, process_list)
         print("Processes transferring bytes are written in process_transferring_bytes.csv")
+        backdoor.write_malicious_remote_ip_to_csv(suspicious_remote_ip_file_path, process_list)
+        print("Processes connecting to suspicious remote IP are written in process_connecting_to_suspicious_ip.csv")
 
         # Write the CSV file to Json
         backdoor.convert_csv_to_json(final_file_path)
@@ -59,7 +61,8 @@ def write_to_csv_suspicious_process_to_unknown_ports():
 
 def write_to_csv_process_running_binary_deleted():
     """ Find processes running on the endpoint whose binary has been deleted from disk"""
-    # Processes that are running whose binary has been deleted from the disk
+
+    # Get processes that are running whose binary has been deleted from the disk
     process_list = backdoor.processes_running_binary_deleted(hw_type)
     if process_list:
         final_file_path = read_configure_file('file_location', value='binary_deleted_process.csv')
@@ -80,6 +83,7 @@ def write_to_csv_process_running_binary_deleted():
 
 def write_to_csv_suspicious_chrome_extensions():
     """Find chrome extensions which are suspicious"""
+
     # Find Suspicious Chrome extensions
     process_list = backdoor.find_suspicious_chrome_extensions()
 
@@ -99,7 +103,7 @@ def write_to_csv_process_largest_resident_memory():
     # Processes that are running with largest resident memory
     process_list = backdoor.check_processes_large_resident_memory(hw_type)
 
-    ## Write it to CSV file
+    # Set the file path
     final_file_path = read_configure_file('file_location', value='large_memory_resident_size_process.csv')
     suspicious_process_file_path = read_configure_file('file_location', value='process_transferring_bytes.csv')
 
@@ -121,12 +125,12 @@ def write_to_csv_check_application_versions():
     process_list = backdoor.check_application_version()
 
     if process_list:
-        ## Write to CSV file
+        # Write to CSV file
         final_file_path = read_configure_file('file_location', value='application_and_versions.csv')
         backdoor.convert_to_csv(final_file_path, process_list)
         print("Application and versions are written in application_and_versions.csv")
 
-        ## Write the CSV file to JSON
+        # Write the CSV file to JSON
         backdoor.convert_csv_to_json(final_file_path)
         print("Application and versions are written in application_and_versions.json")
 
