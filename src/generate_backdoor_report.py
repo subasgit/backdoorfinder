@@ -51,7 +51,7 @@ def write_to_csv_suspicious_process_to_unknown_ports():
         # Write only suspicious process to CSV file
         backdoor.write_process_transfer_bytes_to_csv(suspicious_process_file_path, process_list)
         print("Processes transferring bytes are written in process_transferring_bytes.csv")
-        backdoor.write_malicious_remote_ip_to_csv(suspicious_remote_ip_file_path, process_list)
+        backdoor.write_suspicious_remote_ip_to_csv(suspicious_remote_ip_file_path, process_list)
         print("Processes connecting to suspicious remote IP are written in process_connecting_to_suspicious_ip.csv")
 
         # Write the CSV file to Json
