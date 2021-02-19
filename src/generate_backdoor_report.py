@@ -62,10 +62,16 @@ def write_to_csv_process_running_binary_deleted():
     # Processes that are running whose binary has been deleted from the disk
     process_list = backdoor.processes_running_binary_deleted(hw_type)
     if process_list:
-        # Write it to CSV file
         final_file_path = read_configure_file('file_location', value='binary_deleted_process.csv')
+        suspicious_process_file_path = read_configure_file('file_location', value='process_transferring_bytes.csv')
+
+        # Write it to CSV file
         backdoor.convert_to_csv(final_file_path, process_list)
         print("Processes running with its binary deleted are written in binary_deleted_process.csv")
+
+        # Write only suspicious process to CSV file
+        backdoor.write_process_transfer_bytes_to_csv(suspicious_process_file_path, process_list)
+        print("Processes transferring bytes are written in process_transferring_bytes.csv")
 
         # Write the CSV file to Json
         backdoor.convert_csv_to_json(final_file_path)
@@ -95,8 +101,15 @@ def write_to_csv_process_largest_resident_memory():
 
     ## Write it to CSV file
     final_file_path = read_configure_file('file_location', value='large_memory_resident_size_process.csv')
+    suspicious_process_file_path = read_configure_file('file_location', value='process_transferring_bytes.csv')
+
+    # Write the process to CSV file
     backdoor.convert_to_csv(final_file_path, process_list)
     print("Large resident memory process are written in large_memory_resident_size_process.csv")
+
+    # Write only suspicious process to CSV file
+    backdoor.write_process_transfer_bytes_to_csv(suspicious_process_file_path, process_list)
+    print("Processes transferring bytes are written in process_transferring_bytes.csv")
 
     # Write the CSV file to JSON
     backdoor.convert_csv_to_json(final_file_path)
