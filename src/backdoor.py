@@ -85,17 +85,17 @@ def suspicious_process_to_unknown_ports(hw_type, api_key, api_key_type):
         process['cpu_usage'] = check_processes_cpu(entry['pid'])
         process_list.append(process)
     # Check whether the remote_address is a known malicious IP address if API Key is provided
-    if api_key != 'none' and api_key != 'None':
+    if 'none' not in api_key:
         if 'apivoid' in api_key_type:
-            process_lists = check_apivoid(api_key, process_list)
+            process_list = check_apivoid(api_key, process_list)
         else:
-            process_lists = check_vt(api_key, process_list)
+            process_list = check_vt(api_key, process_list)
 
     if "Apple" in hw_type:
-        final_process_list = check_network_traffic(process_lists)
+        final_process_list = check_network_traffic(process_list)
         return final_process_list
     else:
-        return process_lists
+        return process_list
 
 
 def processes_running_binary_deleted(hw_type):
