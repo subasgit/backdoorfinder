@@ -273,5 +273,6 @@ is executed.
 ### 
 ### Credits
 Logo Image: https://thenounproject.com/Krisada/
+
 Query for Chrome Extension function : https://medium.com/quiq-blog/detecting-high-risk-chrome-extensions-with-osquery-bca1a8856448
 
