@@ -33,12 +33,15 @@ Please read the restrictions of public api key and use it likewise
 
 Before running the scripts, run configure.py to configure the variables like api key,file path 
 where you want to store the output files.
-![ezgif-6-2f114f418fb7](https://user-images.githubusercontent.com/71156714/110165823-5640d800-7da8-11eb-98d1-8561eefa180c.gif)
 
- 	
 ```
 python3 configure.py
 ```
+
+![ezgif-6-2f114f418fb7](https://user-images.githubusercontent.com/71156714/110165823-5640d800-7da8-11eb-98d1-8561eefa180c.gif)
+
+ 	
+
 
 ## Usage 
 Now you are all set! You can run the whole script or run only specific functions you are interested in
