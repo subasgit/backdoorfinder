@@ -41,6 +41,8 @@ python3 configure.py
 ## Usage 
 Now you are all set! You can run the whole script or run only specific functions you are interested in
 
+![Scriptflow](https://user-images.githubusercontent.com/71156714/110165669-1b3ea480-7da8-11eb-8f2d-17f0e9d4a7cd.jpeg)
+
 To explore the options to run
 ```
 python3 generate_backdoor_report.py -h
