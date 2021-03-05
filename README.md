@@ -271,5 +271,7 @@ configure.txt If user dont have any preference of file path, file will be stored
 is executed. 
 
 ### 
-
+### Credits
+Logo Image: https://thenounproject.com/Krisada/
+Query for Chrome Extension function : https://medium.com/quiq-blog/detecting-high-risk-chrome-extensions-with-osquery-bca1a8856448
 
