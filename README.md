@@ -7,7 +7,7 @@
 
 
 ## Getting Started
-This is a tool to find potential backdoor/security holes in your endpoint(laptop/desktop/server). These instructions will help you install and run in your local system. This is primarily tested on macOS but supported on Ubuntu and Windows too. Using this you can identify, 
+This is a tool to find potential backdoor/security holes in your endpoint(laptop/desktop/server).This is primarily tested on macOS but supported on Ubuntu and Windows too. Using this you can identify, 
 
 * Processes exposed to possible network attack
 
@@ -16,6 +16,8 @@ This is a tool to find potential backdoor/security holes in your endpoint(laptop
 * Malicious process running without having corresponding binary in filesystem
 
 * Suspicious Chrome extensions (which are removed from Chrome Store) 
+
+These instructions will help you install and run in your local system.
 
 ### Prerequisites:
 
